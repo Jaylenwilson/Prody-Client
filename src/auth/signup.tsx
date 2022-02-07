@@ -1,8 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Props } from '../App';
-import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, } from 'reactstrap';
+import { MDBIcon } from 'mdb-react-ui-kit'
 import LoginProps from './login'
+import { MDBBtn } from 'mdb-react-ui-kit';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 
 export interface SignupProps {
@@ -16,10 +20,16 @@ export interface SignupProps {
     setSessionToken: Props['setSessionToken']
     isDisplayed: boolean,
     isOpen: Props['isOpen'],
-    toggleModal: Props['toggleModal']
+    toggleModal: Props['toggleModal'],
+    closeModal: Props['closeModal'],
+    formerrors: { email: string, username: string, password: string }
+    emailValid: boolean,
+    passwordValid: boolean,
+    usernameValid: boolean,
+    formValid: boolean,
 }
 
-export class Signup extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'] }, SignupProps> {
+export class Signup extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'], closeModal: Props['closeModal'], }, SignupProps> {
     constructor(props: SignupProps) {
         super(props)
 
@@ -35,12 +45,18 @@ export class Signup extends React.Component<{ sessionToken: Props['sessionToken'
             setSessionToken: this.props.setSessionToken,
             isDisplayed: true,
             isOpen: this.props.isOpen,
-            toggleModal: this.props.toggleModal
+            toggleModal: this.props.toggleModal,
+            closeModal: this.props.toggleModal,
+            formerrors: { email: '', username: '', password: '' },
+            emailValid: false,
+            passwordValid: false,
+            usernameValid: false,
+            formValid: false,
         }
         this.handleClick = this.handleClick.bind(this);
         // this.userSignup = this.userSignup.bind(this);
         // this.toggleModal = this.toggleModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        // this.closeModal = this.closeModal.bind(this);
     }
 
     handleClick(e: React.ChangeEvent<HTMLInputElement>) {
@@ -86,11 +102,8 @@ export class Signup extends React.Component<{ sessionToken: Props['sessionToken'
             .catch(err => console.log(err))
     }
 
-    closeModal(e: React.ChangeEvent<ModalHeader>) {
-        if (this.state.user !== '') {
-            <Navigate to='/home' />
-        }
-    }
+
+
 
     // toggleModal(e: React.ChangeEvent<Modal>) {
     //     this.setState({
@@ -104,8 +117,8 @@ export class Signup extends React.Component<{ sessionToken: Props['sessionToken'
         return (
             <div>
                 <Modal isOpen={this.props.isOpen} >
-                    <ModalHeader closeModal={this.closeModal}>Sign Up</ModalHeader>
-                    <ModalBody>
+                    <ModalHeader >Sign Up <MDBBtn onClick={this.props.closeModal}><FontAwesomeIcon icon={faTimes} fa-2x /></MDBBtn></ModalHeader>
+                    <ModalBody closeModal={this.props.closeModal}>
                         <Form onSubmit={this.userSignup} >
                             <FormGroup>
                                 <Label>Enter a Username</Label>
@@ -129,8 +142,8 @@ export class Signup extends React.Component<{ sessionToken: Props['sessionToken'
                             </FormGroup>
                             <Button type='submit' >Sign up!</Button>
                         </Form>
-
                     </ModalBody>
+                    {this.state.user !== '' && <Navigate to='/home' />}
                 </Modal>
             </div>
         )

@@ -21,10 +21,11 @@ export type LoginProps = {
     isDisplayed: boolean,
     toggleModal: Props['toggleModal'],
     isOpen: Props['isOpen'],
+    closeModal: Props['closeModal'],
 }
 
 
-class Login extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], toggleModal: Props['toggleModal'], isOpen: Props['isOpen'] }, LoginProps> {
+class Login extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], toggleModal: Props['toggleModal'], isOpen: Props['isOpen'], closeModal: Props['closeModal'], }, LoginProps> {
     constructor(props: LoginProps) {
         super(props)
 
@@ -39,7 +40,8 @@ class Login extends React.Component<{ sessionToken: Props['sessionToken'], updat
             setSessionToken: this.props.setSessionToken,
             isDisplayed: true,
             toggleModal: this.props.toggleModal,
-            isOpen: this.props.isOpen
+            isOpen: this.props.isOpen,
+            closeModal: this.props.closeModal,
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -101,8 +103,10 @@ class Login extends React.Component<{ sessionToken: Props['sessionToken'], updat
                 <div id='registerButton'>
                     <p>Not a member?</p>
                     <MDBBtn onClick={this.props.toggleModal} type='button'>Sign up</MDBBtn>
+                    {this.state.user !== '' && <Navigate to='/home' />}
+
                 </div>
-                <Signup toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
+                <Signup closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
             </div>
 
 
