@@ -21,7 +21,12 @@ export interface CreatePostProps {
     closeModal: Props['closeModal']
 }
 
-export class CreateP extends React.Component<{ sessionToken: Props['sessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'], closeModal: Props['closeModal'] }, CreatePostProps> {
+export class CreateP extends React.Component<{
+    sessionToken: Props['sessionToken'],
+    isOpen: Props['isOpen'],
+    toggleModal: Props['toggleModal'],
+    closeModal: Props['closeModal']
+}, CreatePostProps> {
     constructor(props: CreatePostProps) {
         super(props)
 
@@ -48,6 +53,7 @@ export class CreateP extends React.Component<{ sessionToken: Props['sessionToken
         })
     };
 
+
     createPost = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -61,20 +67,25 @@ export class CreateP extends React.Component<{ sessionToken: Props['sessionToken
                     link: this.state.link
                 }
             }),
+
             headers: new Headers({
                 "Content-Type": "application/json",
-                authorization: `Bearer ${this.props.sessionToken}`
+                Authorization: `${localStorage.getItem("Authorization")}`
             })
         })
+
             .then(data => data.json())
             .then(data => {
                 console.log(data);
                 this.setState({
-                    postId: data.posts.id
+                    postId: data.post.id,
                 })
             })
             .catch((err) => console.log(err))
+        console.log(this.props.sessionToken)
+
     }
+
 
 
 

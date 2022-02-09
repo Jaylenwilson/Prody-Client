@@ -18,7 +18,16 @@ export type Props = {
   toggleModal: () => void
   isOpen: boolean
   closeModal: () => void
+
 };
+
+export type ostInfo = {
+  id: number,
+  category: string,
+  description: string,
+  image: string,
+  link: string
+}
 
 
 export type setSessionToken = {
