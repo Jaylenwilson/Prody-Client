@@ -7,29 +7,34 @@ import LoginProps from './login'
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import APIURL from '../helpers/environment';
 
 // set user state here 
 export interface SignupProps {
-    username: string,
-    email: string,
-    password: string,
-    role: string,
     user: Props['user'],
     sessionToken: Props['sessionToken'],
     updateToken: Props['updateToken'],
     setSessionToken: Props['setSessionToken']
-    isDisplayed: boolean,
     isOpen: Props['isOpen'],
     toggleModal: Props['toggleModal'],
     closeModal: Props['closeModal'],
-    formerrors: { email: string, username: string, password: string }
-    emailValid: boolean,
-    passwordValid: boolean,
-    usernameValid: boolean,
-    formValid: boolean,
+    setUser: Props['setUser']
 }
 
-export class Signup extends React.Component<{ user: Props['user'], sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'], closeModal: Props['closeModal'], }, SignupProps> {
+export interface SignUpState {
+    username: string,
+    email: string,
+    password: string,
+    role: string,
+    user: string,
+    isOpen: boolean,
+    sessionToken: string,
+    updateToken: string,
+    toggleModal: Props['toggleModal'],
+    closeModal: Props['closeModal']
+}
+
+export class Signup extends React.Component<SignupProps, SignUpState> {
     constructor(props: SignupProps) {
         super(props)
 
@@ -40,18 +45,11 @@ export class Signup extends React.Component<{ user: Props['user'], sessionToken:
             role: '',
             user: '',
             // toggleModal: (isOpen: boolean) => { false },
-            sessionToken: this.props.sessionToken,
-            updateToken: this.props.updateToken,
-            setSessionToken: this.props.setSessionToken,
-            isDisplayed: true,
+            sessionToken: "",
+            updateToken: "",
             isOpen: this.props.isOpen,
             toggleModal: this.props.toggleModal,
             closeModal: this.props.toggleModal,
-            formerrors: { email: '', username: '', password: '' },
-            emailValid: false,
-            passwordValid: false,
-            usernameValid: false,
-            formValid: false,
         }
         this.handleClick = this.handleClick.bind(this);
         // this.userSignup = this.userSignup.bind(this);
@@ -73,8 +71,8 @@ export class Signup extends React.Component<{ user: Props['user'], sessionToken:
 
     userSignup = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        await fetch('http://localhost:5000/auth/register', {
+        console.log('something')
+        await fetch(`${APIURL}auth/register`, {
             method: 'POST',
             body: JSON.stringify({
                 users: {
@@ -94,10 +92,10 @@ export class Signup extends React.Component<{ user: Props['user'], sessionToken:
                 console.log(json)
                 // this.props.updateToken(data.sessionToken);
                 // this.props.setSessionToken(data.sessionToken);
-                this.setState({
-                    user: json.user.id
-                });
+                this.props.setSessionToken(json.sessionToken);
                 this.props.updateToken(json.sessionToken);
+                this.props.setUser(json.user.id);
+
             })
             .catch(err => console.log(err))
     }

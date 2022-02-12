@@ -7,7 +7,7 @@ switch (window.location.hostname) {
         break;
 
     case 'https://jw-prody-client.herokuapp.com/':
-        APIURL = 'https://jw-prody-client.herokuapp.com/';
+        APIURL = 'https://prodyserver.herokuapp.com/';
 }
 
 export default APIURL

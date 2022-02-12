@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Signup } from './signup';
 import { SignupProps } from './signup';
 import { LandingProps } from './landing';
+import APIURL from '../helpers/environment';
 //! TO DO
 // create a button to open signup modal
 
@@ -60,7 +61,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     userLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await fetch(`http://localhost:5000/auth/login`, {
+        await fetch(`http://${APIURL}/auth/login`, {
             method: 'POST',
             body: JSON.stringify({
                 user: { username: this.state.username, email: this.state.email, password: this.state.password }
@@ -108,7 +109,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                     {this.state.user !== "" && <Navigate to='/home' />}
 
                 </div>
-                <Signup user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
+                <Signup setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
             </div>
 
 
