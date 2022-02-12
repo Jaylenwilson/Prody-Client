@@ -6,7 +6,7 @@ switch (window.location.hostname) {
         APIURL = 'http://localhost:5000';
         break;
 
-    case 'https://jw-prody-client.herokuapp.com/':
+    case 'jw-prody-client.herokuapp.com':
         APIURL = 'https://prodyserver.herokuapp.com/';
 }
 
