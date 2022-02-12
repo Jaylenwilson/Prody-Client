@@ -8,25 +8,26 @@ import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody } 
 import App from '../../App';
 import { faVestPatches } from '@fortawesome/free-solid-svg-icons';
 
+
 export interface CreatePostProps {
     sessionToken: Props['sessionToken'],
-    category: string,
-    description: string,
-    image: string,
-    link: string,
-    user: string,
-    postId: string,
+    setPostId: Props['setPostId']
+    postId: Props['postId'],
     isOpen: Props['isOpen'],
     toggleModal: Props['toggleModal'],
     closeModal: Props['closeModal']
 }
 
-export class CreateP extends React.Component<{
-    sessionToken: Props['sessionToken'],
-    isOpen: Props['isOpen'],
-    toggleModal: Props['toggleModal'],
-    closeModal: Props['closeModal']
-}, CreatePostProps> {
+export interface CreatePostState {
+    category: string,
+    description: string,
+    image: string,
+    link: string,
+    user: string,
+    postId: string
+}
+
+export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
     constructor(props: CreatePostProps) {
         super(props)
 
@@ -35,12 +36,8 @@ export class CreateP extends React.Component<{
             description: '',
             image: '',
             link: '',
-            sessionToken: this.props.sessionToken,
             user: '',
             postId: '',
-            isOpen: this.props.isOpen,
-            toggleModal: this.props.toggleModal,
-            closeModal: this.props.toggleModal
         }
         this.handleClick = this.handleClick.bind(this);
         this.createPost = this.createPost.bind(this);
@@ -77,9 +74,7 @@ export class CreateP extends React.Component<{
             .then(data => data.json())
             .then(data => {
                 console.log(data);
-                this.setState({
-                    postId: data.post.id,
-                })
+                this.props.setPostId(data.post.id)
             })
             .catch((err) => console.log(err))
         console.log(this.props.sessionToken)

@@ -4,44 +4,46 @@ import { Props } from '../App';
 import { MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Signup } from './signup';
-import { SignupProps } from './signup'
+import { SignupProps } from './signup';
+import { LandingProps } from './landing';
 //! TO DO
 // create a button to open signup modal
 
 
 export type LoginProps = {
-    user: string,
-    username: string,
-    email: string,
-    password: string,
-    role: string,
+    setUser: Props['setUser'],
+    user: Props['user'],
     sessionToken: Props['sessionToken'],
     updateToken: Props['updateToken'],
     setSessionToken: Props['setSessionToken'],
-    isDisplayed: boolean,
     toggleModal: Props['toggleModal'],
     isOpen: Props['isOpen'],
     closeModal: Props['closeModal'],
 }
 
+export type LoginState = {
+    user: string,
+    username: string,
+    email: string,
+    password: string,
+    role: string,
+    sessionToken: string,
+    updateToken: string
+}
 
-class Login extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], toggleModal: Props['toggleModal'], isOpen: Props['isOpen'], closeModal: Props['closeModal'], }, LoginProps> {
+
+class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: LoginProps) {
         super(props)
 
         this.state = {
-            user: '',
+            user: "",
             username: '',
             email: '',
             password: '',
             role: '',
-            sessionToken: this.props.sessionToken,
-            updateToken: this.props.updateToken,
-            setSessionToken: this.props.setSessionToken,
-            isDisplayed: true,
-            toggleModal: this.props.toggleModal,
-            isOpen: this.props.isOpen,
-            closeModal: this.props.closeModal,
+            sessionToken: "",
+            updateToken: "",
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -70,11 +72,9 @@ class Login extends React.Component<{ sessionToken: Props['sessionToken'], updat
             .then(data => data.json())
             .then(data => {
                 console.log(data);
-                this.props.updateToken(data.sessionToken);
                 this.props.setSessionToken(data.sessionToken);
-                this.setState({
-                    user: data.user.id
-                });
+                this.props.updateToken(data.sessionToken);
+                this.props.setUser(data.user.id);
             })
 
     };
@@ -99,14 +99,16 @@ class Login extends React.Component<{ sessionToken: Props['sessionToken'], updat
 
 
                     <MDBBtn type='submit'>Sign in</MDBBtn>
+                    {this.state.user !== "" && <Navigate to='/home' />}
+
                 </form>
                 <div id='registerButton'>
                     <p>Not a member?</p>
                     <MDBBtn onClick={this.props.toggleModal} type='button'>Sign up</MDBBtn>
-                    {this.state.user !== '' && <Navigate to='/home' />}
+                    {this.state.user !== "" && <Navigate to='/home' />}
 
                 </div>
-                <Signup closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
+                <Signup user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
             </div>
 
 

@@ -8,13 +8,13 @@ import { MDBBtn } from 'mdb-react-ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-
+// set user state here 
 export interface SignupProps {
     username: string,
     email: string,
     password: string,
     role: string,
-    user: string,
+    user: Props['user'],
     sessionToken: Props['sessionToken'],
     updateToken: Props['updateToken'],
     setSessionToken: Props['setSessionToken']
@@ -29,7 +29,7 @@ export interface SignupProps {
     formValid: boolean,
 }
 
-export class Signup extends React.Component<{ sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'], closeModal: Props['closeModal'], }, SignupProps> {
+export class Signup extends React.Component<{ user: Props['user'], sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], isOpen: Props['isOpen'], toggleModal: Props['toggleModal'], closeModal: Props['closeModal'], }, SignupProps> {
     constructor(props: SignupProps) {
         super(props)
 

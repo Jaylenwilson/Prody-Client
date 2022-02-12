@@ -2,58 +2,62 @@ import React from 'react';
 import CreatePost from './Create-View/CreatePost';
 import App from '../App';
 import { Props } from '../App';
-import { MDBBtn } from 'mdb-react-ui-kit';
-import { CreatePostProps } from './Create-View/CreatePost';
-import { Container, Row, Col, } from 'reactstrap';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardImage, MDBCardText } from 'mdb-react-ui-kit';
-import ReactPlayer from 'react-player'
+import { Container, Row, Col, Card, CardBody, CardText, CardTitle, } from 'reactstrap';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardImage, MDBCardText, MDBBtn, MDBTable, MDBInput } from 'mdb-react-ui-kit';
+import ReactPlayer from 'react-player';
+import CreateCom from './Comments/CreateComment';
+import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, } from 'reactstrap';
+import SideBar from '../sidebar/SideBar'
+import Delete from '../components/Create-View/DeletePost';
+import { LoginProps } from '../auth/login';
+import { posix } from 'path/posix';
+//! TO DO
+// get post id in comment created response
+//add close comment modal and post modal 
+// change default of post modal to false
 
-// Render a YouTube video player
-<ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
-// import ViewPost from './Create-View/ViewPost';
-// import ViewP, { ViewAllProps } from './Create-View/ViewPost'
 
 export interface HomeProps {
     sessionToken: Props['sessionToken'],
     isOpen: Props['isOpen'],
     toggleModal: Props['toggleModal'],
     closeModal: Props['closeModal'],
-    // category: CreatePostProps['category'],
-    // description: CreatePostProps['description'],
-    // image: CreatePostProps['image'],
-    // link: CreatePostProps['link'],
-    posts: string[],
-
-    // posts: ViewAllProps['posts']
+    user: Props['user'],
+    setPostId: Props['setPostId']
+    postId: Props['postId']
 }
 
-export class Home extends React.Component<{
-    sessionToken: Props['sessionToken'],
-    isOpen: Props['isOpen'],
-    toggleModal: Props['toggleModal'],
-    closeModal: Props['closeModal'],
-    // category: CreatePostProps['category'],
-    // description: CreatePostProps['description'],
-    // image: CreatePostProps['image'],
-    // link: CreatePostProps['link'],
+export interface HomeState {
+    posts: string[],
+    commentActive: boolean,
+    content: string,
+    commentId: string,
+    postId: string,
+    isOpen: boolean
+}
 
-}, HomeProps> {
+export class Home extends React.Component<HomeProps, HomeState> {
     constructor(props: HomeProps) {
         super(props)
 
         this.state = {
-            sessionToken: this.props.sessionToken,
             isOpen: this.props.isOpen,
-            toggleModal: this.props.toggleModal,
-            closeModal: this.props.closeModal,
             posts: [],
-
-
-            // category: this.props.category,
-            // description: this.props.description,
-            // image: this.props.image,
-            // link: this.props.link
+            commentActive: false,
+            content: "",
+            commentId: "",
+            postId: "",
         }
+        this.createComment = this.createComment.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+
+    }
+
+    handleClick(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            ...this.state,
+            [e.target.name]: e.target.value
+        })
     }
 
     componentDidMount() {
@@ -70,25 +74,47 @@ export class Home extends React.Component<{
         })
             .then(data => data.json())
             .then(data => {
+                console.log(data.posts[0].id)
                 console.log(data)
-                this.setState({
-                    posts: data.posts,
-
-                })
+                this.setState({ posts: data.posts, })
             })
             .catch((err) => console.log(err))
 
     }
 
+    activateComment = (p: string) => {
+        console.log(p)
+        this.setState({
+            commentActive: !this.state.commentActive,
+            postId: p
+        })
+    }
+
+
+
+    // add ternary for if comments show or not
+
     postMap = () => {
         return this.state.posts?.map((posts: any, index: number) => {
+            console.log('MAP', posts.id)
+            console.log('COMMENTS', posts.comments)
             return (
-                <MDBCard key={index}>
-                    <MDBCardTitle>{posts.category}</MDBCardTitle>
+                <MDBCard className="card" key={posts.id}>
+                    <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
                     <MDBCardBody>
-                        <ReactPlayer url={posts.link} />
+                        <ReactPlayer className="video" url={posts.link} />
                         <MDBCardText>{posts.description}</MDBCardText>
+                        {posts.comments.map((c: any, index: number) => {
+                            console.log(typeof c.content)
+                            return (
+                                <div className="commentcontent" key={index} >
+                                    <p >{c.content}</p>
+                                </div>
+                            )
+                        })}
                     </MDBCardBody>
+
+                    <MDBBtn onClick={() => this.activateComment(posts.id)} postId={posts.id}>Comment</MDBBtn>
                 </MDBCard>
 
             )
@@ -97,21 +123,72 @@ export class Home extends React.Component<{
 
 
 
+    createComment = async (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        console.log(this.state)
+        console.log(e)
+        await fetch(`http://localhost:5000/comments/comment`, {
+            method: 'POST',
+            body: JSON.stringify({
+                comments: {
+                    content: this.state.content,
+                    // commentId: this.state.commentId,
+                    postId: this.state.postId
+                }
+            }),
+
+            headers: new Headers({
+                "Content-Type": "application/json",
+                Authorization: `${localStorage.getItem("Authorization")}`
+            })
+        })
+
+            .then(data => data.json())
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    commentId: data.comment.id,
+                    // postId: this.state.postId,
+
+                })
+            })
+    }
+
+
+
     render(): React.ReactNode {
         return (
             <div id="viewwrapper">
-                <Container>
+                <Container id="homecontainer">
                     <Row>
                         <Col>
                             {this.postMap()}
+
                         </Col>
                     </Row>
+                    {this.state.commentActive ?
+
+                        <Modal isOpen={this.state.commentActive}>
+                            <ModalHeader>Comment</ModalHeader>
+                            <ModalBody>
+                                <Form onSubmit={this.createComment}>
+                                    <FormGroup>
+                                        <Label>Create a Comment</Label>
+                                        <Input id="comment" type="text" name="content" value={this.state.content} onChange={this.handleClick} label="comment" />
+                                    </FormGroup>
+                                    <Button type="submit">Create</Button>
+                                </Form>
+                            </ModalBody>
+
+
+                        </Modal> : null}
                 </Container>
                 <div >
                     <MDBBtn onClick={this.props.toggleModal}>Create</MDBBtn>
-                    <CreatePost sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
-                    {/* <ViewP /> */}
+                    <CreatePost setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
+
                 </div>
+                {/* <SideBar /> */}
             </div>
         )
     }

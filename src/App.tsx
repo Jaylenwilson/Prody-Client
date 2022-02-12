@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./auth/login";
@@ -7,27 +7,24 @@ import Signup from "./auth/signup";
 import SignupProps from "../src/auth/signup";
 import Home from "./components/Home";
 import { Navigate } from "react-router-dom";
-
+import SideBar from "./sidebar/SideBar";
+import MyPost from "./components/Create-View/ViewPost"
 export type Props = {
   sessionToken: string | null,
   updateToken: (newToken: string) => void,
   setSessionToken: (newToken: string | null) => void,
   isLoggedIn: boolean,
   clearToken: () => void,
-  user: string | null,
+  user: string,
   toggleModal: () => void
   isOpen: boolean
   closeModal: () => void
-
+  postId: string
+  setUser: (user: string) => void
+  setPostId: (postId: string) => void
 };
 
-export type ostInfo = {
-  id: number,
-  category: string,
-  description: string,
-  image: string,
-  link: string
-}
+
 
 
 export type setSessionToken = {
@@ -38,8 +35,9 @@ export type setSessionToken = {
 
 const App: React.FunctionComponent = () => {
   const [sessionToken, setSesionToken] = useState<string | null>(" ")
-  const [user, setUser] = useState<string | null>("")
+  const [user, setUser] = useState<string>("")
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [postId, setPostId] = useState<string>("")
 
   const updateToken = (newToken: string) => {
     localStorage.setItem("Authorization", newToken);
@@ -52,21 +50,24 @@ const App: React.FunctionComponent = () => {
   }
 
   const toggleModal = () => {
-    setIsOpen(true)
+    setIsOpen(!isOpen)
   }
 
   const closeModal = () => {
     setIsOpen(false)
   }
 
-
+  useEffect(() => {
+    setUser(user)
+  }, [sessionToken])
 
   return (
     <>
+      {/* <SideBar /> */}
       <Router>
         <Routes>
           <Route path='/' element={
-            <Landing closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
+            <Landing user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
               updateToken={updateToken} setSessionToken={setSesionToken} />
           } />
 
@@ -77,14 +78,18 @@ const App: React.FunctionComponent = () => {
           } /> */}
 
           <Route path='/login' element={
-            <Login closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} updateToken={updateToken}
+            <Login user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} updateToken={updateToken}
               sessionToken={sessionToken}
               setSessionToken={setSesionToken}
             />
           } />
 
           <Route path='/home' element={
-            <Home isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
+            <Home setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
+          } />
+
+          <Route path='/mypost' element={
+            <MyPost postId={postId} user={user} />
           } />
 
         </Routes>

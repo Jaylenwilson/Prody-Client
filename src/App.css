@@ -6,3 +6,61 @@
 
  
 }
+
+MDBCard {
+  margin-bottom: 2rem;
+}
+
+.title {
+  margin-top: 2rem;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.card {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  background-color: black;
+  text-align: center;
+  border: 2px solid blue;
+  justify-content: center;
+  color: white;
+  max-width: 500px;
+  left: 30%;
+}
+
+#homecontainer {
+  background-color: black;
+  width: 100%;
+}
+
+body {
+  background-color: black;
+}
+
+.video {
+  max-width: 450px;
+  border-radius: 100%;
+}
+
+#comment{
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 50%;
+  color: white;
+}
+
+.link{
+  color: '#FCD1D1';
+        text-decoration: 'none';
+        letter-spacing: '0.4em';
+        font-size: '1em';
+        font-weight: 'bold';
+        padding: '0.8em';
+        display: 'inline-block';
+        text-align: 'center';
+        width: '100%';
+        transition: 'all easeOut 300ms';
+        text-transform: 'uppercase';
+}
+
