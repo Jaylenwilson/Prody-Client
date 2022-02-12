@@ -141,7 +141,7 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                             <Button type='submit' >Sign up!</Button>
                         </Form>
                     </ModalBody>
-                    {this.state.sessionToken && <Navigate to='/home' />}
+                    {localStorage.getItem("sessionToken") && <Navigate to='/home' />}
                 </Modal>
             </div>
         )
