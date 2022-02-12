@@ -61,7 +61,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     userLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await fetch(`http://${APIURL}/auth/login`, {
+        await fetch(`${APIURL}auth/login`, {
             method: 'POST',
             body: JSON.stringify({
                 user: { username: this.state.username, email: this.state.email, password: this.state.password }
