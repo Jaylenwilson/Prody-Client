@@ -11,6 +11,7 @@ import SideBar from '../sidebar/SideBar'
 import Delete from '../components/Create-View/DeletePost';
 import { LoginProps } from '../auth/login';
 import { posix } from 'path/posix';
+import APIURL from '../helpers/environment';
 //! TO DO
 // get post id in comment created response
 //add close comment modal and post modal 
@@ -65,7 +66,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     ViewPost = async () => {
-        await fetch(`http://localhost:5000/posts/postinfo`, {
+        await fetch(`${APIURL}/posts/postinfo`, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "application/json",
