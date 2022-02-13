@@ -66,7 +66,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     ViewPost = async () => {
-        await fetch(`${APIURL}posts/postinfo`, {
+        await fetch(`${APIURL}/posts/postinfo`, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "application/json",

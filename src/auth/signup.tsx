@@ -72,7 +72,7 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
     userSignup = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('something')
-        await fetch(`${APIURL}auth/register`, {
+        await fetch(`${APIURL}/auth/register`, {
             method: 'POST',
             body: JSON.stringify({
                 users: {
