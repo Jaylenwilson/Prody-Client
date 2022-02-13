@@ -106,7 +106,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                 <div id='registerButton'>
                     <p>Not a member?</p>
                     <MDBBtn onClick={this.props.toggleModal} type='button'>Sign up</MDBBtn>
-                    {this.state.user !== "" && <Navigate to='/home' />}
+                    {this.props.user !== "" && <Navigate to='/home' />}
 
                 </div>
                 <Signup setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />

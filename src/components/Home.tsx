@@ -128,7 +128,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         e.preventDefault()
         console.log(this.state)
         console.log(e)
-        await fetch(`http://localhost:5000/comments/comment`, {
+        await fetch(`${APIURL}/comments/comment`, {
             method: 'POST',
             body: JSON.stringify({
                 comments: {

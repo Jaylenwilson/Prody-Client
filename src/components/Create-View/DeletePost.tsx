@@ -7,6 +7,7 @@ import { Props } from '../../App';
 import { LoginProps } from '../../auth/login';
 import { HomeProps } from '../Home';
 import { MDBBtn } from 'mdb-react-ui-kit';
+import APIURL from '../../helpers/environment';
 
 export interface DeleteProps {
     user: LoginProps['user'],
@@ -37,7 +38,7 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
         e.preventDefault()
         console.log('USER', this.state.user)
         console.log('POSTID', this.state.postId)
-        await fetch(`http://localhost:5000/posts/delete/${this.props.user}/${this.props.postId}`, {
+        await fetch(`http://${APIURL}/posts/delete/${this.props.user}/${this.props.postId}`, {
             method: 'DELETE',
             headers: new Headers({
                 "Content-Type": "application/json",

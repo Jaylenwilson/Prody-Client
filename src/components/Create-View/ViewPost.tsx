@@ -8,19 +8,21 @@ import ReactPlayer from 'react-player';
 import Delete from './DeletePost';
 import { LoginProps } from '../../auth/login'
 import { Props } from '../../App'
+import APIURL from '../../helpers/environment';
 
 
 export interface MyPostProps {
     postId: Props['postId'],
     user: Props['user'],
+    setUser: Props['setUser']
 }
 
 export interface MyPostState {
-    category: '',
-    description: '',
-    image: '',
-    link: '',
-    myPosts: string[]
+    category: string,
+    description: string,
+    image: string,
+    link: string,
+    myPosts: string[],
 }
 
 export class MyPost extends React.Component<MyPostProps, MyPostState> {
@@ -32,7 +34,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             category: '',
             description: '',
             image: '',
-            link: ''
+            link: '',
         }
         this.ViewMyPosts = this.ViewMyPosts.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -47,7 +49,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
 
 
     editPost = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        await fetch(`http://localhost:5000/posts/${this.props.user}/${this.props.postId}`, {
+        await fetch(`http://${APIURL}/posts/${this.props.user}/${this.props.postId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 posts: {
@@ -72,7 +74,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
 
     ViewMyPosts = async () => {
         console.log(this.props.user)
-        await fetch(`http://localhost:5000/posts/mypost/${this.props.user}`, {
+        await fetch(`${APIURL}/posts/mypost/${this.props.user}`, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -85,9 +87,9 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                 console.log(this.state.myPosts)
                 this.setState({
                     myPosts: data.posts,
-
-                    // user: data.posts.userId
+                    // user: this.props.user
                 })
+
                 console.log(this.state.myPosts)
             })
             .catch((err) => console.log(err))

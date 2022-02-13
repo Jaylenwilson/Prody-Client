@@ -89,7 +89,7 @@ const App: React.FunctionComponent = () => {
           } />
 
           <Route path='/mypost' element={
-            <MyPost postId={postId} user={user} />
+            <MyPost user={user} setUser={setUser} postId={postId} />
           } />
 
         </Routes>

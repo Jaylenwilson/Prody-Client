@@ -3,7 +3,7 @@ let APIURL = "";
 switch (window.location.hostname) {
 
     case 'localhost' || '127.0.0.1':
-        APIURL = 'http://localhost:5001';
+        APIURL = 'http://localhost:5002';
         break;
 
     case 'jw-prody-client.herokuapp.com':

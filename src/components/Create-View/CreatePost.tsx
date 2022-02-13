@@ -7,7 +7,7 @@ import { Props } from '../../App';
 import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import App from '../../App';
 import { faVestPatches } from '@fortawesome/free-solid-svg-icons';
-
+import APIURL from '../../helpers/environment'
 
 export interface CreatePostProps {
     sessionToken: Props['sessionToken'],
@@ -54,7 +54,7 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
     createPost = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await fetch(`http://localhost:5000/posts/post`, {
+        await fetch(`${APIURL}/posts/post`, {
             method: 'POST',
             body: JSON.stringify({
                 posts: {
