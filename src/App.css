@@ -64,3 +64,8 @@ body {
         text-transform: 'uppercase';
 }
 
+#navbar {
+  display: inline;
+  background-color: white;
+  text-decoration: none;
+}

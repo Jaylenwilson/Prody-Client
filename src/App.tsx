@@ -65,6 +65,7 @@ const App: React.FunctionComponent = () => {
     <>
       {/* <SideBar /> */}
       <Router>
+        <SideBar sessionToken={sessionToken} />
         <Routes>
           <Route path='/' element={
             <Landing user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
