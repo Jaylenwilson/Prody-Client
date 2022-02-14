@@ -15,7 +15,7 @@ export interface SideBarProps {
 export interface SideBarState {
     toggleSidebar: boolean,
     route: string,
-    isLoggedIn: boolean,
+    isLoggedIn: boolean
     sessionToken: Props['sessionToken']
 }
 
@@ -24,7 +24,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
         super(props)
 
         this.state = {
-            toggleSidebar: true,
+            toggleSidebar: false,
             route: "",
             isLoggedIn: false,
             sessionToken: this.props.sessionToken
@@ -45,17 +45,13 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
         this.displaySideBar()
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
-        if (prevProps.sessionToken !== this.state.sessionToken) {
-            this.displaySideBar()
-        }
-    }
 
-    componentWillUnmount() {
-        this.setState({
-            toggleSidebar: false
-        })
-    }
+
+    // componentWillRecieveProps(nextProps) {
+    //     if (this.props.sessionToken ==! nextProps.sessionToken) {
+    //         this.displaySideBar()
+    //     }
+    // }
 
 
 
@@ -79,6 +75,6 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
 
         )
     }
-}
 
+}
 export default Sidebar

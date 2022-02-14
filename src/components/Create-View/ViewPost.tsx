@@ -9,6 +9,8 @@ import Delete from './DeletePost';
 import { LoginProps } from '../../auth/login'
 import { Props } from '../../App'
 import APIURL from '../../helpers/environment';
+import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, } from 'reactstrap';
+
 
 
 export interface MyPostProps {
@@ -23,6 +25,7 @@ export interface MyPostState {
     image: string,
     link: string,
     myPosts: string[],
+    editActive: boolean
 }
 
 export class MyPost extends React.Component<MyPostProps, MyPostState> {
@@ -35,6 +38,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             description: '',
             image: '',
             link: '',
+            editActive: false
         }
         this.ViewMyPosts = this.ViewMyPosts.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -49,7 +53,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
 
 
     editPost = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        await fetch(`http://${APIURL}/posts/${this.props.user}/${this.props.postId}`, {
+        await fetch(`${APIURL}/posts/${this.props.user}/${this.props.postId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 posts: {
@@ -66,6 +70,12 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
         })
 
 
+    }
+
+    activateEdit = () => {
+        this.setState({
+            editActive: !this.state.editActive
+        })
     }
 
     componentDidMount() {
@@ -95,6 +105,9 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             .catch((err) => console.log(err))
     }
 
+    // shouldComponentUpdate() {
+    //     this.ViewMyPosts()
+    // }
     myPostMap = () => {
         return this.state.myPosts?.map((myPosts: any, index: number) => {
             return (
@@ -103,6 +116,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                     <MDBCardBody>
                         <ReactPlayer className="video" url={myPosts.link} />
                         <MDBCardText>{myPosts.description}</MDBCardText>
+                        <MDBBtn onClick={this.activateEdit}>EDIT</MDBBtn>
                         <Delete user={myPosts.userId} postId={myPosts.id} />
                     </MDBCardBody>
 
@@ -111,6 +125,8 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             )
         })
     }
+
+
 
     render(): React.ReactNode {
         return (
@@ -123,6 +139,33 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                         </Col>
                     </Row>
                 </Container>
+                <div>
+                    {this.state.editActive ?
+                        <Modal isOpen={this.state.editActive}>
+                            <ModalHeader>Edit</ModalHeader>
+                            <ModalBody>
+                                <Form onSubmit={this.editPost}>
+                                    <FormGroup>
+                                        <Label>Category</Label>
+                                        <Input name='category' type='text' value={this.state.category} onChange={this.handleClick}></Input>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Description</Label>
+                                        <Input name='description' type='textarea' value={this.state.description} onChange={this.handleClick}></Input>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Image</Label>
+                                        <Input name='image' type='url' value={this.state.image} onChange={this.handleClick}></Input>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Link</Label>
+                                        <Input name='link' type='url' value={this.state.link} onChange={this.handleClick}></Input>
+                                    </FormGroup>
+                                    <Button type="submit">Create</Button>
+                                </Form>
+                            </ModalBody>
+                        </Modal> : null}
+                </div>
             </div>
         )
     }

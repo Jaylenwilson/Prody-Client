@@ -8,6 +8,7 @@ import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody } 
 import App from '../../App';
 import { faVestPatches } from '@fortawesome/free-solid-svg-icons';
 import APIURL from '../../helpers/environment'
+import * as FaIcons from 'react-icons/fa';
 
 export interface CreatePostProps {
     sessionToken: Props['sessionToken'],
@@ -119,7 +120,7 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
                                 <Input name='link' type='url' value={this.state.link} onChange={this.handleClick}></Input>
                             </FormGroup>
 
-                            <Button type='submit'>Create</Button>
+                            <Button type='submit'><FaIcons.FaPlus /></Button>
                         </Form>
                     </ModalBody>
                 </Modal>

@@ -38,7 +38,7 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
         e.preventDefault()
         console.log('USER', this.state.user)
         console.log('POSTID', this.state.postId)
-        await fetch(`http://${APIURL}/posts/delete/${this.props.user}/${this.props.postId}`, {
+        await fetch(`${APIURL}/posts/delete/${this.props.user}/${this.props.postId}`, {
             method: 'DELETE',
             headers: new Headers({
                 "Content-Type": "application/json",

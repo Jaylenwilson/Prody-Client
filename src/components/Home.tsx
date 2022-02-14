@@ -12,6 +12,8 @@ import Delete from '../components/Create-View/DeletePost';
 import { LoginProps } from '../auth/login';
 import { posix } from 'path/posix';
 import APIURL from '../helpers/environment';
+import * as FaIcons from 'react-icons/fa';
+
 //! TO DO
 // get post id in comment created response
 //add close comment modal and post modal 
@@ -200,7 +202,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </Modal> : null}
                 </Container>
                 <div >
-                    <MDBBtn onClick={this.props.toggleModal}>Create</MDBBtn>
+                    <MDBBtn onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
                     <CreatePost setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
 
                 </div>
