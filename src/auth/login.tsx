@@ -91,27 +91,33 @@ class Login extends React.Component<LoginProps, LoginState> {
     render(): React.ReactNode {
         return (
             <div>
-                <h3>Login</h3>
-                <form id="loginform" onSubmit={this.userLogin}>
+                <h1>Prody</h1>
+                <div id="login">
+                    <h3>Login</h3>
+                    <form id="loginform" onSubmit={this.userLogin}>
 
-                    <MDBInput className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username'></MDBInput>
-                    <MDBInput className='mb-4' type='text' name='email' value={this.state.email} onChange={this.handleClick} label='email'></MDBInput>
-                    <MDBInput className='mb-4' type='password' name='password' value={this.state.password} onChange={this.handleClick} label='password'></MDBInput>
+                        <MDBInput className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username'></MDBInput>
+                        <MDBInput className='mb-4' type='text' name='email' value={this.state.email} onChange={this.handleClick} label='email'></MDBInput>
+                        <MDBInput className='mb-4' type='password' name='password' value={this.state.password} onChange={this.handleClick} label='password'></MDBInput>
 
 
-                    <MDBBtn type='submit'>Sign in</MDBBtn>
-                    {this.state.user !== "" && <Navigate to='/home' />}
+                        <MDBBtn type='submit'>Sign in</MDBBtn>
+                        {this.state.user !== "" && <Navigate to='/home' />}
 
-                </form>
-                <div id='registerButton'>
+                    </form>
+                </div>
+                <div id='registerbutton'>
                     <p>Not a member?</p>
                     <MDBBtn onClick={this.props.toggleModal} type='button'>Sign up</MDBBtn>
                     {this.props.user !== "" && <Navigate to='/home' />}
 
                 </div>
-                <Signup setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
-            </div>
 
+                <div id="signupbtn">
+                    <Signup setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
+                </div>
+
+            </div>
 
         )
     }

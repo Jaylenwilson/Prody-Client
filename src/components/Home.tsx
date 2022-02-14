@@ -35,6 +35,7 @@ export interface HomeState {
     commentId: string,
     postId: string,
     isOpen: boolean
+    viewcomment: boolean
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
@@ -48,6 +49,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
             content: "",
             commentId: "",
             postId: "",
+            viewcomment: false
         }
         this.createComment = this.createComment.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -91,6 +93,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
         })
     }
 
+    viewComment = () => {
+        this.setState({
+            viewcomment: !this.state.viewcomment
+        })
+    }
+
 
 
     // add ternary for if comments show or not
@@ -104,17 +112,24 @@ export class Home extends React.Component<HomeProps, HomeState> {
                     <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
                     <MDBCardBody>
                         <ReactPlayer className="video" url={posts.link} />
-                        <MDBCardText>{posts.description}</MDBCardText>
-                        {posts.comments.map((c: any, index: number) => {
-                            console.log(typeof c.content)
-                            return (
-                                <div className="commentcontent" key={index} >
-                                    <p >{c.content}</p>
-                                </div>
-                            )
-                        })}
+                        <h3>{posts.description}</h3>
+                        <MDBBtn onClick={() => this.viewComment()}>view comments</MDBBtn>
                     </MDBCardBody>
+                    {posts.comments.map((c: any, index: number) => {
+                        console.log(typeof c.content)
 
+                        return (
+                            <div>
+                                <div>
+                                    {this.state.viewcomment ?
+                                        <div className="commentcontent" key={index} >
+                                            <p >{c.content}</p>
+                                        </div>
+                                        : null}
+                                </div>
+                            </div>
+                        )
+                    })}
                     <MDBBtn onClick={() => this.activateComment(posts.id)} postId={posts.id}>Comment</MDBBtn>
                 </MDBCard>
 

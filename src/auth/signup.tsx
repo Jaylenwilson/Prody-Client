@@ -112,9 +112,12 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
 
     render(): React.ReactNode {
         return (
-            <div>
+            <div id="modal">
                 <Modal isOpen={this.props.isOpen} >
-                    <ModalHeader >Sign Up <MDBBtn onClick={this.props.closeModal}><FontAwesomeIcon icon={faTimes} fa-2x /></MDBBtn></ModalHeader>
+                    <div id="modalbtn">
+                        <ModalHeader id="modalhead" >Sign Up </ModalHeader>
+                        <MDBBtn id="btn" onClick={this.props.closeModal}><FontAwesomeIcon icon={faTimes} fa-2x /></MDBBtn>
+                    </div>
                     <ModalBody closeModal={this.props.closeModal}>
                         <Form onSubmit={this.userSignup} >
                             <FormGroup>

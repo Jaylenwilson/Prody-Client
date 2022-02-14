@@ -15,7 +15,8 @@ export interface SideBarProps {
 export interface SideBarState {
     toggleSidebar: boolean,
     route: string,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    sessionToken: Props['sessionToken']
 }
 
 export class Sidebar extends React.Component<SideBarProps, SideBarState> {
@@ -23,34 +24,59 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
         super(props)
 
         this.state = {
-            toggleSidebar: false,
+            toggleSidebar: true,
             route: "",
-            isLoggedIn: false
+            isLoggedIn: false,
+            sessionToken: this.props.sessionToken
         }
     }
 
 
 
     displaySideBar = () => {
-        if (this.state.route !== '/') {
+        if (this.props.sessionToken !== '') {
             this.setState({
                 toggleSidebar: !this.state.toggleSidebar
             })
         }
     }
 
+    componentDidMount() {
+        this.displaySideBar()
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        if (prevProps.sessionToken !== this.state.sessionToken) {
+            this.displaySideBar()
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            toggleSidebar: false
+        })
+    }
+
+
+
+
 
 
     render(): React.ReactNode {
         return (
-            <div id="navbar">
-                <li>
-                    <Link to="/home">Home <FaIcons.FaHome /> </Link>
-                </li>
-                <li>
-                    <Link to="/mypost">My Post <FaIcons.FaBook /></Link>
-                </li>
+            <div>
+                {this.state.toggleSidebar ?
+                    <div id="navbar" >
+                        {/* {this.displaySideBar()} */}
+                        <li>
+                            <Link to="/home">Home <FaIcons.FaHome /> </Link>
+                        </li>
+                        <li>
+                            <Link to="/mypost">My Post <FaIcons.FaBook /></Link>
+                        </li>
+                    </div> : null}
             </div>
+
         )
     }
 }

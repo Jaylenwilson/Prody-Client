@@ -1,10 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+
+
 #loginform{
   width: 30vw;
-  border: 2px solid rgb(100, 29, 182);
+  border: 8px solid #021414;
   padding: 20px;
- 
-
- 
+  border-radius: 10%;
+  background-color: #042121;
+  color: white;
+  
 }
 
 MDBCard {
@@ -20,9 +25,9 @@ MDBCard {
 .card {
   margin-top: 2rem;
   margin-bottom: 4rem;
-  background-color: black;
+  background-color: #042121;
   text-align: center;
-  border: 2px solid blue;
+  border: 8px solid #021414;
   justify-content: center;
   color: white;
   max-width: 500px;
@@ -30,7 +35,7 @@ MDBCard {
 }
 
 #homecontainer {
-  background-color: black;
+  background-color: white;
   width: 100%;
 }
 
@@ -43,11 +48,12 @@ body {
   border-radius: 100%;
 }
 
-#comment{
+.commentcontent{
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   max-width: 50%;
   color: white;
+  border-bottom:#021414 ;
 }
 
 .link{
@@ -68,4 +74,41 @@ body {
   display: inline;
   background-color: white;
   text-decoration: none;
+}
+
+
+body {
+  background-color: white;
+  font-family: 'Bebas Neue', cursive;
+}
+
+#login {
+  margin: auto;
+  width: 25%;
+  margin-top: 5rem;
+  border: 10px blue;
+}
+
+h1{
+  margin-top: 3rem;
+  font-size: 50px;
+  font-weight: 400;
+}
+
+#registerbutton {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#modal{
+  background-color: #042121;
+
+}
+
+
+#modalhead.modal-header {
+  padding: 13px;
+  justify-content: none;
+  display: inline-block;
+  
 }
