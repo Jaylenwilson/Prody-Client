@@ -20,6 +20,8 @@ export type LoginProps = {
     toggleModal: Props['toggleModal'],
     isOpen: Props['isOpen'],
     closeModal: Props['closeModal'],
+    username: Props['username'],
+    setUsername: Props['setUsername']
 }
 
 export type LoginState = {
@@ -29,7 +31,8 @@ export type LoginState = {
     password: string,
     role: string,
     sessionToken: string,
-    updateToken: string
+    updateToken: string,
+
 }
 
 
@@ -45,6 +48,7 @@ class Login extends React.Component<LoginProps, LoginState> {
             role: '',
             sessionToken: "",
             updateToken: "",
+
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -73,9 +77,12 @@ class Login extends React.Component<LoginProps, LoginState> {
             .then(data => data.json())
             .then(data => {
                 console.log(data);
-                this.props.setSessionToken(data.sessionToken);
-                this.props.updateToken(data.sessionToken);
-                this.props.setUser(data.user.id);
+                if (data.user) {
+                    this.props.setSessionToken(data.sessionToken);
+                    this.props.updateToken(data.sessionToken);
+                    this.props.setUser(data.user.id);
+                    this.props.setUsername(data.user.username)
+                }
             })
 
     };
@@ -96,10 +103,12 @@ class Login extends React.Component<LoginProps, LoginState> {
                     <h3>Login</h3>
                     <form id="loginform" onSubmit={this.userLogin}>
 
-                        <MDBInput className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username'></MDBInput>
+                        <MDBInput required='required' className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username'></MDBInput>
+                        <p className="errormsg">Username must be atleast 6 characters long</p>
                         <MDBInput className='mb-4' type='text' name='email' value={this.state.email} onChange={this.handleClick} label='email'></MDBInput>
+                        <p className="errormsg">This field is required</p>
                         <MDBInput className='mb-4' type='password' name='password' value={this.state.password} onChange={this.handleClick} label='password'></MDBInput>
-
+                        <p className="errormsg"> Password must be 8 characters long, contain 1 number, 1 special character</p>
 
                         <MDBBtn type='submit'>Sign in</MDBBtn>
                         {this.state.user !== "" && <Navigate to='/home' />}
@@ -114,10 +123,11 @@ class Login extends React.Component<LoginProps, LoginState> {
                 </div>
 
                 <div id="signupbtn">
-                    <Signup setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
+                    <Signup username={this.props.username} setUsername={this.props.setUsername} setUser={this.props.setUser} user={this.props.user} closeModal={this.props.closeModal} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} />
                 </div>
 
             </div>
+
 
         )
     }

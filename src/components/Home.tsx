@@ -28,6 +28,8 @@ export interface HomeProps {
     user: Props['user'],
     setPostId: Props['setPostId']
     postId: Props['postId']
+    username: Props['username'],
+
 }
 
 export interface HomeState {
@@ -36,8 +38,10 @@ export interface HomeState {
     content: string,
     commentId: string,
     postId: string,
-    isOpen: boolean
-    viewcomment: boolean
+    isOpen: boolean,
+    viewcomment: boolean,
+    commentEdit: boolean,
+    commentMatch: boolean
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
@@ -51,7 +55,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
             content: "",
             commentId: "",
             postId: "",
-            viewcomment: false
+            viewcomment: false,
+            commentEdit: false,
+            commentMatch: false
         }
         this.createComment = this.createComment.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -79,9 +85,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
         })
             .then(data => data.json())
             .then(data => {
-                console.log(data.posts[0].id)
-                console.log(data)
-                this.setState({ posts: data.posts, })
+
+                if (data.posts[0]) {
+                    console.log(data.posts[0].id)
+                    console.log(data)
+                    this.setState({ posts: data.posts, })
+                }
             })
             .catch((err) => console.log(err))
 
@@ -95,11 +104,27 @@ export class Home extends React.Component<HomeProps, HomeState> {
         })
     }
 
-    viewComment = () => {
+    deactivateComment = () => {
+        this.setState({
+            commentActive: false
+        })
+    }
+
+    viewComment = (p: string) => {
         this.setState({
             viewcomment: !this.state.viewcomment
         })
     }
+
+    activateCommentEdit = (p: string, c: string) => {
+        this.setState({
+            commentEdit: !this.state.commentEdit,
+            postId: p,
+            commentId: c
+        })
+        console.log(!this.state.commentEdit)
+    }
+
 
 
 
@@ -111,21 +136,42 @@ export class Home extends React.Component<HomeProps, HomeState> {
             console.log('COMMENTS', posts.comments)
             return (
                 <MDBCard className="card" key={posts.id}>
+                    {/* //  <h2>{this.props.username}</h2> */}
                     <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
                     <MDBCardBody>
                         <ReactPlayer className="video" url={posts.link} />
                         <h3>{posts.description}</h3>
-                        <MDBBtn onClick={() => this.viewComment()}>view comments</MDBBtn>
+                        <MDBBtn onClick={() => this.viewComment(posts.id)}>view comments</MDBBtn>
                     </MDBCardBody>
                     {posts.comments.map((c: any, index: number) => {
                         console.log(typeof c.content)
-
+                        console.log(c.userId)
+                        console.log(this.props.user)
                         return (
                             <div>
-                                <div>
+                                <div id="commentshell">
                                     {this.state.viewcomment ?
+                                        //call delete and or edit function here
                                         <div className="commentcontent" key={index} >
+                                            {/* <h5>{this.props.username}</h5> */}
                                             <p >{c.content}</p>
+                                            {console.log(this.props.user, 'C User', c.userId)}
+                                            {c.userId === this.props.user ?
+                                                <MDBBtn onClick={() => this.activateCommentEdit(posts.id, c.id)}> Edit</MDBBtn> :
+                                                null
+                                            }
+                                            {/* {() => {
+                                                console.log('UserId', c.userId)
+                                                if (c.userId === this.props.user) {
+                                                    return <MDBBtn onclick={this.activateCommentEdit}>Edit</MDBBtn>
+
+
+                                                } else {
+                                                    return null
+                                                }
+                                            }} */}
+
+
                                         </div>
                                         : null}
                                 </div>
@@ -166,15 +212,36 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 console.log(data);
                 this.setState({
                     commentId: data.comment.id,
-                    // postId: this.state.postId,
+                    // postId: this.state.postId
+                    commentActive: false
 
                 })
+                this.ViewPost()
             })
+    }
+
+    editComment = async (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        fetch(`${APIURL}/comments/edit/${this.props.user}/${this.state.postId}/${this.state.commentId}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                comments: {
+                    content: this.state.content
+                }
+            }),
+            headers: new Headers({
+                "Content-Type": "application/json",
+                Authorization: `${localStorage.getItem("Authorization")}`
+            })
+        })
+        this.ViewPost()
     }
 
 
 
+
     render(): React.ReactNode {
+        console.log(this.props)
         return (
             <div id="viewwrapper">
                 <Container id="homecontainer">
@@ -187,20 +254,47 @@ export class Home extends React.Component<HomeProps, HomeState> {
                     {this.state.commentActive ?
 
                         <Modal isOpen={this.state.commentActive}>
-                            <ModalHeader>Comment</ModalHeader>
+                            <div id="createmodal">
+                                <ModalHeader className="closemodal">Comment</ModalHeader>
+                            </div>
                             <ModalBody>
                                 <Form onSubmit={this.createComment}>
                                     <FormGroup>
                                         <Label>Create a Comment</Label>
-                                        <Input id="comment" type="text" name="content" value={this.state.content} onChange={this.handleClick} label="comment" />
+                                        <Input id="comment" type="textarea" name="content" value={this.state.content} onChange={this.handleClick} label="comment" />
                                     </FormGroup>
                                     <Button type="submit">Create</Button>
+                                    <Button className="closebtn" onClick={this.deactivateComment}><FaIcons.FaTimes /></Button>
+
                                 </Form>
                             </ModalBody>
 
 
                         </Modal> : null}
+
+
                 </Container>
+                <div>
+                    {this.state.commentEdit ?
+                        <Modal isOpen={this.state.commentEdit}>
+                            <div id="createmodal">
+                                <ModalHeader className="closemodal">Edit Comment</ModalHeader>
+                            </div>
+                            <ModalBody>
+                                <Form onSubmit={this.editComment}>
+                                    <FormGroup>
+                                        <Label>Edit</Label>
+                                        <Input id="comment" type="textarea" name="content" value={this.state.content} onChange={this.handleClick} label="comment" />
+                                    </FormGroup>
+                                    <Button type="submit">Create</Button>
+                                    <Button className="closebtn" onClick={this.deactivateComment}><FaIcons.FaTimes /></Button>
+
+                                </Form>
+                            </ModalBody>
+
+
+                        </Modal> : null}
+                </div>
                 <div >
                     <MDBBtn onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
                     <CreatePost setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />

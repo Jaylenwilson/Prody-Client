@@ -22,6 +22,9 @@ export type Props = {
   postId: string
   setUser: (user: string) => void
   setPostId: (postId: string) => void
+  username: string
+  setUsername: (username: string) => void
+
 };
 
 
@@ -38,6 +41,7 @@ const App: React.FunctionComponent = () => {
   const [user, setUser] = useState<string>("")
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [postId, setPostId] = useState<string>("")
+  const [username, setUsername] = useState<string>("")
 
   const updateToken = (newToken: string) => {
     localStorage.setItem("Authorization", newToken);
@@ -46,7 +50,8 @@ const App: React.FunctionComponent = () => {
 
   const clearToken = () => {
     localStorage.clear();
-    setSesionToken('')
+    setSesionToken('');
+    <Navigate to='/' />
   }
 
   const toggleModal = () => {
@@ -65,10 +70,10 @@ const App: React.FunctionComponent = () => {
     <>
       {/* <SideBar /> */}
       <Router>
-        <SideBar sessionToken={sessionToken} />
+        <SideBar clearToken={clearToken} username={username} sessionToken={sessionToken} />
         <Routes>
           <Route path='/' element={
-            <Landing user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
+            <Landing username={user} setUsername={setUsername} user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
               updateToken={updateToken} setSessionToken={setSesionToken} />
           } />
 
@@ -78,15 +83,15 @@ const App: React.FunctionComponent = () => {
               setSessionToken={setSesionToken} />
           } /> */}
 
-          <Route path='/login' element={
+          {/* <Route path='/login' element={
             <Login user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} updateToken={updateToken}
               sessionToken={sessionToken}
               setSessionToken={setSesionToken}
             />
-          } />
+          } /> */}
 
           <Route path='/home' element={
-            <Home setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
+            <Home username={username} setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
           } />
 
           <Route path='/mypost' element={

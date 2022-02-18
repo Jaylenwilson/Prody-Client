@@ -25,7 +25,8 @@ export interface CreatePostState {
     image: string,
     link: string,
     user: string,
-    postId: string
+    postId: string,
+    closeModal: Props['closeModal']
 }
 
 export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
@@ -39,6 +40,7 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
             link: '',
             user: '',
             postId: '',
+            closeModal: this.props.closeModal
         }
         this.handleClick = this.handleClick.bind(this);
         this.createPost = this.createPost.bind(this);
@@ -101,7 +103,7 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
             <div>
                 <Modal isOpen={this.props.isOpen}>
                     <ModalHeader>Create Post</ModalHeader>
-                    <ModalBody closeModal={this.props.closeModal}>
+                    <ModalBody >
                         <Form onSubmit={this.createPost}>
                             <FormGroup>
                                 <Label>Category</Label>
@@ -120,7 +122,8 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
                                 <Input name='link' type='url' value={this.state.link} onChange={this.handleClick}></Input>
                             </FormGroup>
 
-                            <Button type='submit'><FaIcons.FaPlus /></Button>
+                            <Button onClick={this.props.closeModal} type='submit'><FaIcons.FaPlus /></Button>
+                            <Button onClick={this.props.closeModal}>cancel</Button>
                         </Form>
                     </ModalBody>
                 </Modal>

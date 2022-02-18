@@ -23,8 +23,10 @@ MDBCard {
 }
 
 .card {
-  margin-top: 2rem;
+  z-index: 0;
+  margin-top: 5rem;
   margin-bottom: 4rem;
+  overflow: hidden;
   background-color: #042121;
   text-align: center;
   border: 8px solid #021414;
@@ -123,3 +125,30 @@ h1{
   display: inline-block;
   
 }
+
+a {
+  color: darkgrey;
+}
+
+.errormsg {
+  color: red;
+}
+
+.closemodal, .closebtn {
+  display: inline-block;
+  
+}
+
+.closemodal {
+  margin-right: 69%;
+  top: 1%
+}
+
+#navbardiv {
+  z-index: 10;
+}
+
+#commentshell {
+  text-align: center;
+}
+

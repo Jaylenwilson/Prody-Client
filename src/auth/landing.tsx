@@ -12,9 +12,11 @@ export interface LandingProps {
     closeModal: Props['closeModal']
     setUser: Props['setUser']
     user: Props['user']
+    username: Props['username'],
+    setUsername: Props['setUsername']
 }
 
-export class Landing extends React.Component<{ user: Props['user'], setUser: Props['setUser'], sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], toggleModal: Props['toggleModal'], isOpen: Props['isOpen'], closeModal: Props['closeModal'], }, LoginProps> {
+export class Landing extends React.Component<{ username: Props['username'], setUsername: Props['setUsername'], user: Props['user'], setUser: Props['setUser'], sessionToken: Props['sessionToken'], updateToken: Props['updateToken'], setSessionToken: Props['setSessionToken'], toggleModal: Props['toggleModal'], isOpen: Props['isOpen'], closeModal: Props['closeModal'], }, LoginProps> {
     constructor(props: LandingProps) {
         super(props)
 
@@ -25,7 +27,7 @@ export class Landing extends React.Component<{ user: Props['user'], setUser: Pro
     render(): React.ReactNode {
         return (
             <div>
-                <Login user={this.props.user} setUser={this.props.setUser} closeModal={this.props.closeModal} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} />
+                <Login username={this.props.username} setUsername={this.props.setUsername} user={this.props.user} setUser={this.props.setUser} closeModal={this.props.closeModal} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} />
             </div>
         )
     }

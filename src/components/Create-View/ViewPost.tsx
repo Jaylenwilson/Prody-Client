@@ -26,6 +26,7 @@ export interface MyPostState {
     link: string,
     myPosts: string[],
     editActive: boolean
+    postId: string
 }
 
 export class MyPost extends React.Component<MyPostProps, MyPostState> {
@@ -38,9 +39,9 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             description: '',
             image: '',
             link: '',
-            editActive: false
+            editActive: false,
+            postId: ''
         }
-        this.ViewMyPosts = this.ViewMyPosts.bind(this)
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -53,7 +54,9 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
 
 
     editPost = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        await fetch(`${APIURL}/posts/${this.props.user}/${this.props.postId}`, {
+        e.preventDefault()
+        //console.log(this.state.postId)
+        await fetch(`${APIURL}/posts/edit/${this.props.user}/${this.state.postId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 posts: {
@@ -67,20 +70,32 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                 "Content-Type": "application/json",
                 Authorization: `${localStorage.getItem("Authorization")}`
             })
-        })
 
+        })
+        this.ViewMyPosts()
 
     }
 
-    activateEdit = () => {
+    activateEdit = (p: string) => {
+        console.log(p)
         this.setState({
-            editActive: !this.state.editActive
+            editActive: !this.state.editActive,
+            postId: p
         })
+
     }
 
     componentDidMount() {
         this.ViewMyPosts()
     }
+
+    closeEdit = () => {
+        this.setState({
+            editActive: false
+        })
+    }
+
+
 
     ViewMyPosts = async () => {
         console.log(this.props.user)
@@ -100,7 +115,8 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                     // user: this.props.user
                 })
 
-                console.log(this.state.myPosts)
+
+                // console.log(this.state.myPosts)
             })
             .catch((err) => console.log(err))
     }
@@ -116,7 +132,8 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                     <MDBCardBody>
                         <ReactPlayer className="video" url={myPosts.link} />
                         <MDBCardText>{myPosts.description}</MDBCardText>
-                        <MDBBtn onClick={this.activateEdit}>EDIT</MDBBtn>
+                        <MDBBtn onClick={() => this.activateEdit(myPosts.id)} >EDIT</MDBBtn>
+                        {/* <MDBBtn onClick={this.activateEdit} >EDIT</MDBBtn> */}
                         <Delete user={myPosts.userId} postId={myPosts.id} />
                     </MDBCardBody>
 
@@ -162,6 +179,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                                         <Input name='link' type='url' value={this.state.link} onChange={this.handleClick}></Input>
                                     </FormGroup>
                                     <Button type="submit">Create</Button>
+                                    <Button onClick={this.closeEdit}>Cancel</Button>
                                 </Form>
                             </ModalBody>
                         </Modal> : null}

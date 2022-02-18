@@ -8,7 +8,6 @@ import { LoginProps } from '../../auth/login';
 import { HomeProps } from '../Home';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import APIURL from '../../helpers/environment';
-
 export interface DeleteProps {
     user: LoginProps['user'],
     postId: HomeProps['postId']
@@ -31,11 +30,12 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
         this.setState({
             ...this.state,
             [e.target.name]: e.target.value
+
         })
     }
 
     deletePost = async (e: React.ChangeEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+
         console.log('USER', this.state.user)
         console.log('POSTID', this.state.postId)
         await fetch(`${APIURL}/posts/delete/${this.props.user}/${this.props.postId}`, {
@@ -46,13 +46,15 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
             })
         })
 
-
     }
+
+
+
 
     render(): React.ReactNode {
         return (
             <>
-                <MDBBtn onClick={this.deletePost} value={this.state.postId} onChange={this.handleClick}>Delete</MDBBtn>
+                <MDBBtn className="btn btn-danger btn-floating" onClick={this.deletePost} value={this.state.postId} onChange={this.handleClick}>Delete</MDBBtn>
             </>
         )
     }

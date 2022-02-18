@@ -18,7 +18,10 @@ export interface SignupProps {
     isOpen: Props['isOpen'],
     toggleModal: Props['toggleModal'],
     closeModal: Props['closeModal'],
-    setUser: Props['setUser']
+    setUser: Props['setUser'],
+    username: Props['username'],
+    setUsername: Props['setUsername']
+
 }
 
 export interface SignUpState {
@@ -140,7 +143,7 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                                     <option value="Student">Student</option>
                                 </Input>
                             </FormGroup>
-                            <Button type='submit' >Sign up!</Button>
+                            <Button onClick={this.props.closeModal} type='submit' >Sign up!</Button>
                         </Form>
                     </ModalBody>
                     {localStorage.getItem("sessionToken") && <Navigate to='/home' />}

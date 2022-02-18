@@ -9,6 +9,9 @@ import { Props } from '../App'
 
 export interface SideBarProps {
     sessionToken: Props['sessionToken']
+    username: Props['username']
+    clearToken: Props['clearToken']
+
 }
 
 
@@ -27,7 +30,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
             toggleSidebar: false,
             route: "",
             isLoggedIn: false,
-            sessionToken: this.props.sessionToken
+            sessionToken: this.props.sessionToken,
         }
     }
 
@@ -60,7 +63,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
 
     render(): React.ReactNode {
         return (
-            <div>
+            <div id="navbardiv">
                 {this.state.toggleSidebar ?
                     <div id="navbar" >
                         {/* {this.displaySideBar()} */}
@@ -69,6 +72,12 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                         </li>
                         <li>
                             <Link to="/mypost">My Post <FaIcons.FaBook /></Link>
+                        </li>
+                        <li>
+                            <Link to="/mypost">{this.props.username}</Link>
+                        </li>
+                        <li>
+                            <Link to="/" >Logout</Link>
                         </li>
                     </div> : null}
             </div>
