@@ -11,16 +11,16 @@ import APIURL from '../../helpers/environment';
 export interface DeleteProps {
     user: LoginProps['user'],
     postId: HomeProps['postId']
+    ViewMyPosts: () => void
 }
 
-export class Delete extends React.Component<{ user: LoginProps['user'], postId: HomeProps['postId'] }, DeleteProps>{
+
+
+export class Delete extends React.Component<DeleteProps, {}>{
     constructor(props: DeleteProps) {
         super(props)
 
-        this.state = {
-            user: this.props.user,
-            postId: this.props.postId,
-        }
+
         this.handleClick = this.handleClick.bind(this)
 
     }
@@ -36,8 +36,8 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
 
     deletePost = async (e: React.ChangeEvent<HTMLButtonElement>) => {
 
-        console.log('USER', this.state.user)
-        console.log('POSTID', this.state.postId)
+        console.log('USER', this.props.user)
+        console.log('POSTID', this.props.postId)
         await fetch(`${APIURL}/posts/delete/${this.props.user}/${this.props.postId}`, {
             method: 'DELETE',
             headers: new Headers({
@@ -45,6 +45,7 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
                 Authorization: `${localStorage.getItem("Authorization")}`
             })
         })
+        this.props.ViewMyPosts()
 
     }
 
@@ -54,7 +55,7 @@ export class Delete extends React.Component<{ user: LoginProps['user'], postId: 
     render(): React.ReactNode {
         return (
             <>
-                <MDBBtn className="btn btn-danger btn-floating" onClick={this.deletePost} value={this.state.postId} onChange={this.handleClick}>Delete</MDBBtn>
+                <MDBBtn className="btn btn-danger btn-floating" onClick={this.deletePost} value={this.props.postId} onChange={this.handleClick}>Delete</MDBBtn>
             </>
         )
     }

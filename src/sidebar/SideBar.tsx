@@ -64,7 +64,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                             <Link to="/mypost">{this.props.username}</Link>
                         </li>
                         <li>
-                            <Link to="/"  > <button onClick={this.props.clearToken}>Logout</button></Link>
+                            <button onClick={this.props.clearToken}>Logout</button>
                         </li>
                     </div> : null}
             </div>

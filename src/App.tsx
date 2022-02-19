@@ -8,7 +8,8 @@ import SignupProps from "../src/auth/signup";
 import Home from "./components/Home";
 import { Navigate } from "react-router-dom";
 import SideBar from "./sidebar/SideBar";
-import MyPost from "./components/Create-View/ViewPost"
+import ViewPost from "./components/Create-View/ViewPost"
+import { useNavigate } from 'react-router-dom'
 export type Props = {
   sessionToken: string | null,
   updateToken: (newToken: string) => void,
@@ -43,6 +44,7 @@ const App: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [postId, setPostId] = useState<string>("")
   const [username, setUsername] = useState<string>("")
+  const navigate = useNavigate()
   // const [ViewMyPosts, setViewMyPosts] = useState<void>()
   const updateToken = (newToken: string) => {
     localStorage.setItem("Authorization", newToken);
@@ -52,7 +54,8 @@ const App: React.FunctionComponent = () => {
   const clearToken = () => {
     localStorage.clear();
     setSesionToken('');
-
+    setUser('')
+    navigate('/')
   }
 
   const toggleModal = () => {
@@ -74,37 +77,38 @@ const App: React.FunctionComponent = () => {
   return (
     <>
       {/* <SideBar /> */}
-      <Router>
-        <SideBar clearToken={clearToken} username={username} sessionToken={sessionToken} />
-        <Routes>
-          <Route path='/' element={
-            <Landing username={user} setUsername={setUsername} user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
-              updateToken={updateToken} setSessionToken={setSesionToken} />
-          } />
+      {/* //<Router> */}
+      <SideBar clearToken={clearToken} username={username} sessionToken={sessionToken} />
+      <Routes>
 
-          {/* <Route path='/register' element={
+        <Route path='/' element={
+          <Landing username={user} setUsername={setUsername} user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
+            updateToken={updateToken} setSessionToken={setSesionToken} />
+        } />
+
+        {/* <Route path='/register' element={
             <Signup updateToken={updateToken}
               sessionToken={sessionToken}
               setSessionToken={setSesionToken} />
           } /> */}
 
-          {/* <Route path='/login' element={
+        {/* <Route path='/login' element={
             <Login user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} updateToken={updateToken}
               sessionToken={sessionToken}
               setSessionToken={setSesionToken}
             />
           } /> */}
 
-          <Route path='/home' element={
-            <Home username={username} setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
-          } />
+        <Route path='/home' element={
+          <Home username={username} setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
+        } />
 
-          <Route path='/mypost' element={
-            <MyPost user={user} setUser={setUser} postId={postId} />
-          } />
+        <Route path='/mypost' element={
+          <ViewPost user={user} setUser={setUser} postId={postId} />
+        } />
 
-        </Routes>
-      </Router>
+      </Routes>
+      {/* </Router> */}
     </>
   )
 }

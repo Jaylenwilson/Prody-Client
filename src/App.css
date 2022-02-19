@@ -33,6 +33,7 @@ MDBCard {
   justify-content: center;
   color: white;
   max-width: 500px;
+  
   left: 30%;
 }
 
@@ -154,6 +155,6 @@ a {
 }
 
 #createbtn {
-  margin-bottom: 15rem;
-  position: sticky;
+  margin-top: 5em;
+  /* position: sticky; */
 }

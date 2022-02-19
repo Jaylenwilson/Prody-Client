@@ -17,7 +17,6 @@ export interface MyPostProps {
     postId: Props['postId'],
     user: Props['user'],
     setUser: Props['setUser']
-    // ViewMyPosts: () => void
 }
 
 export interface MyPostState {
@@ -136,7 +135,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                         <MDBCardText>{myPosts.description}</MDBCardText>
                         <MDBBtn onClick={() => this.activateEdit(myPosts.id)} >EDIT</MDBBtn>
                         {/* <MDBBtn onClick={this.activateEdit} >EDIT</MDBBtn> */}
-                        <Delete user={myPosts.userId} postId={myPosts.id} />
+                        <Delete ViewMyPosts={this.ViewMyPosts} user={myPosts.userId} postId={myPosts.id} />
                     </MDBCardBody>
 
                 </MDBCard>

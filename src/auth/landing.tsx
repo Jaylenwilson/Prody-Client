@@ -27,7 +27,9 @@ export class Landing extends React.Component<{ username: Props['username'], setU
     render(): React.ReactNode {
         return (
             <div>
+
                 <Login username={this.props.username} setUsername={this.props.setUsername} user={this.props.user} setUser={this.props.setUser} closeModal={this.props.closeModal} sessionToken={this.props.sessionToken} updateToken={this.props.updateToken} setSessionToken={this.props.setSessionToken} toggleModal={this.props.toggleModal} isOpen={this.props.isOpen} />
+
             </div>
         )
     }

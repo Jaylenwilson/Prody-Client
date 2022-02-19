@@ -17,6 +17,7 @@ export interface CreatePostProps {
     isOpen: Props['isOpen'],
     toggleModal: Props['toggleModal'],
     closeModal: Props['closeModal']
+    ViewPost: () => void
 }
 
 export interface CreatePostState {
@@ -78,6 +79,8 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
             .then(data => {
                 console.log(data);
                 this.props.setPostId(data.post.id)
+                this.props.ViewPost()
+
             })
             .catch((err) => console.log(err))
         console.log(this.props.sessionToken)

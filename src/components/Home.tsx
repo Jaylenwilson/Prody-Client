@@ -42,6 +42,7 @@ export interface HomeState {
     viewcomment: boolean,
     commentEdit: boolean,
     commentMatch: boolean
+
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
@@ -127,6 +128,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
         console.log(!this.state.commentEdit)
     }
 
+    deactivateCommentEdit = () => {
+        this.setState({
+            commentEdit: false
+        })
+    }
     // activateDelete = (p: string, c: string) => {
     //     this.setState({
     //         postId: p,
@@ -266,6 +272,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 Authorization: `${localStorage.getItem("Authorization")}`
             })
         })
+        this.setState({
+            commentEdit: false
+        })
         this.ViewPost()
     }
 
@@ -278,6 +287,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
             <div id="viewwrapper">
                 <Container id="homecontainer">
                     <Row>
+                        <div >
+                            <MDBBtn id="createbtn" onClick={this.props.toggleModal}>gggg<FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
+                            {/* <Button onClick={this.props.toggleModal}>gggg</Button> */}
+                            <CreatePost ViewPost={this.ViewPost} setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
+
+                        </div>
                         <Col>
                             {this.postMap()}
 
@@ -319,7 +334,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         <Input id="comment" type="textarea" name="content" value={this.state.content} onChange={this.handleClick} label="comment" />
                                     </FormGroup>
                                     <Button type="submit">Create</Button>
-                                    <Button className="closebtn" onClick={this.deactivateComment}><FaIcons.FaTimes /></Button>
+                                    <Button className="closebtn" onClick={this.deactivateCommentEdit}><FaIcons.FaTimes /></Button>
 
                                 </Form>
                             </ModalBody>
@@ -327,11 +342,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         </Modal> : null}
                 </div>
-                <div >
-                    <MDBBtn id='createbtn' onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
-                    <CreatePost setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
 
-                </div>
                 {/* <SideBar /> */}
             </div>
         )
