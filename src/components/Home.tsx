@@ -75,6 +75,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.ViewPost()
     }
 
+
+
     ViewPost = async () => {
         await fetch(`${APIURL}/posts/postinfo`, {
             method: 'GET',
@@ -125,6 +127,14 @@ export class Home extends React.Component<HomeProps, HomeState> {
         console.log(!this.state.commentEdit)
     }
 
+    // activateDelete = (p: string, c: string) => {
+    //     this.setState({
+    //         postId: p,
+    //         commentId: c
+    //     })
+    //     this.deleteComment()
+    // }
+
 
 
 
@@ -157,8 +167,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             <p >{c.content}</p>
                                             {console.log(this.props.user, 'C User', c.userId)}
                                             {c.userId === this.props.user ?
-                                                <MDBBtn onClick={() => this.activateCommentEdit(posts.id, c.id)}> Edit</MDBBtn> :
-                                                null
+                                                <div>
+                                                    <MDBBtn onClick={() => this.activateCommentEdit(posts.id, c.id)}> Edit</MDBBtn>
+                                                    <MDBBtn onClick={() => this.deleteComment(posts.id, c.id)}>Delete</MDBBtn>
+                                                </div>
+                                                : null
+
                                             }
                                             {/* {() => {
                                                 console.log('UserId', c.userId)
@@ -186,6 +200,24 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
 
+    deleteComment = async (pid: string, cid: string) => {
+
+        try {
+            const res = await fetch(`${APIURL}/comments/delete/${this.props.user}/${pid}/${cid}`, {
+                method: 'DELETE',
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    Authorization: `${localStorage.getItem("Authorization")}`
+                })
+            })
+            const json = await res.json()
+            // this.ViewPost
+            console.log(json)
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
     createComment = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -296,7 +328,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </Modal> : null}
                 </div>
                 <div >
-                    <MDBBtn onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
+                    <MDBBtn id='createbtn' onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
                     <CreatePost setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
 
                 </div>

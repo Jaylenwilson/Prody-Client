@@ -24,6 +24,7 @@ export type Props = {
   setPostId: (postId: string) => void
   username: string
   setUsername: (username: string) => void
+  ViewMyPosts: () => void
 
 };
 
@@ -37,12 +38,12 @@ export type setSessionToken = {
 
 
 const App: React.FunctionComponent = () => {
-  const [sessionToken, setSesionToken] = useState<string | null>(" ")
+  const [sessionToken, setSesionToken] = useState<string | null>("")
   const [user, setUser] = useState<string>("")
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [postId, setPostId] = useState<string>("")
   const [username, setUsername] = useState<string>("")
-
+  // const [ViewMyPosts, setViewMyPosts] = useState<void>()
   const updateToken = (newToken: string) => {
     localStorage.setItem("Authorization", newToken);
     setSesionToken(newToken)
@@ -51,7 +52,7 @@ const App: React.FunctionComponent = () => {
   const clearToken = () => {
     localStorage.clear();
     setSesionToken('');
-    <Navigate to='/' />
+
   }
 
   const toggleModal = () => {
@@ -60,6 +61,10 @@ const App: React.FunctionComponent = () => {
 
   const closeModal = () => {
     setIsOpen(false)
+  }
+
+  const ViewMyPosts = async () => {
+
   }
 
   useEffect(() => {

@@ -16,10 +16,8 @@ export interface SideBarProps {
 
 
 export interface SideBarState {
-    toggleSidebar: boolean,
     route: string,
     isLoggedIn: boolean
-    sessionToken: Props['sessionToken']
 }
 
 export class Sidebar extends React.Component<SideBarProps, SideBarState> {
@@ -27,26 +25,15 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
         super(props)
 
         this.state = {
-            toggleSidebar: false,
             route: "",
             isLoggedIn: false,
-            sessionToken: this.props.sessionToken,
         }
     }
 
 
 
-    displaySideBar = () => {
-        if (this.props.sessionToken !== '') {
-            this.setState({
-                toggleSidebar: !this.state.toggleSidebar
-            })
-        }
-    }
 
-    componentDidMount() {
-        this.displaySideBar()
-    }
+
 
 
 
@@ -64,7 +51,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
     render(): React.ReactNode {
         return (
             <div id="navbardiv">
-                {this.state.toggleSidebar ?
+                {this.props.sessionToken ?
                     <div id="navbar" >
                         {/* {this.displaySideBar()} */}
                         <li>
@@ -77,7 +64,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                             <Link to="/mypost">{this.props.username}</Link>
                         </li>
                         <li>
-                            <Link to="/" >Logout</Link>
+                            <Link to="/"  > <button onClick={this.props.clearToken}>Logout</button></Link>
                         </li>
                     </div> : null}
             </div>

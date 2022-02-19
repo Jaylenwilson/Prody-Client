@@ -72,6 +72,7 @@ body {
 }
 
 #navbar {
+  z-index: 2;
   display: inline-block;
   background-color: #042121;
   text-decoration: none;
@@ -152,3 +153,7 @@ a {
   text-align: center;
 }
 
+#createbtn {
+  margin-bottom: 15rem;
+  position: sticky;
+}

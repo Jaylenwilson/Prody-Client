@@ -17,6 +17,7 @@ export interface MyPostProps {
     postId: Props['postId'],
     user: Props['user'],
     setUser: Props['setUser']
+    // ViewMyPosts: () => void
 }
 
 export interface MyPostState {
@@ -43,6 +44,7 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
             postId: ''
         }
         this.handleClick = this.handleClick.bind(this)
+        this.ViewMyPosts = this.ViewMyPosts.bind(this)
     }
 
     handleClick(e: React.ChangeEvent<HTMLInputElement>) {
