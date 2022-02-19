@@ -158,11 +158,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         console.log(c.userId)
                         console.log(this.props.user)
                         return (
-                            <div>
+                            <div key={c.id}>
                                 <div id="commentshell">
                                     {this.state.viewcomment ?
                                         //call delete and or edit function here
-                                        <div className="commentcontent" key={index} >
+                                        <div className="commentcontent"  >
                                             {/* <h5>{this.props.username}</h5> */}
                                             <p >{c.content}</p>
                                             {console.log(this.props.user, 'C User', c.userId)}
@@ -211,7 +211,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 })
             })
             const json = await res.json()
-            // this.ViewPost
+            this.ViewPost()
             console.log(json)
         } catch (err) {
             console.log(err)
