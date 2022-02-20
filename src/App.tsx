@@ -12,7 +12,7 @@ import ViewPost from "./components/Create-View/ViewPost"
 import { useNavigate } from 'react-router-dom'
 export type Props = {
   sessionToken: string | null,
-  updateToken: (newToken: string) => void,
+  updateToken: (newToken: string, uName: string) => void,
   setSessionToken: (newToken: string | null) => void,
   isLoggedIn: boolean,
   clearToken: () => void,
@@ -46,8 +46,9 @@ const App: React.FunctionComponent = () => {
   const [username, setUsername] = useState<string>("")
   const navigate = useNavigate()
   // const [ViewMyPosts, setViewMyPosts] = useState<void>()
-  const updateToken = (newToken: string) => {
+  const updateToken = (newToken: string, uName: string) => {
     localStorage.setItem("Authorization", newToken);
+    localStorage.setItem("username", uName);
     setSesionToken(newToken)
   };
 

@@ -61,7 +61,7 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                             <Link to="/mypost">My Post <FaIcons.FaBook /></Link>
                         </li>
                         <li>
-                            <Link to="/mypost">{this.props.username}</Link>
+                            <Link to="/mypost">{localStorage.getItem('username')}</Link>
                         </li>
                         <li>
                             <button onClick={this.props.clearToken}>Logout</button>

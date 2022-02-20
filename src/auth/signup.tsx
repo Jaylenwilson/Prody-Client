@@ -96,9 +96,9 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                 // this.props.setSessionToken(data.sessionToken);
                 if (json.user) {
                     this.props.setSessionToken(json.sessionToken);
-                    this.props.updateToken(json.sessionToken);
+                    this.props.updateToken(json.sessionToken, json.user.username);
                     this.props.setUser(json.user.id);
-                    this.props.setUsername(json.user.username);
+                    // this.props.setUsername(json.user.username);
                 }
             })
             .catch(err => console.log(err))

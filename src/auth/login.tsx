@@ -79,9 +79,9 @@ class Login extends React.Component<LoginProps, LoginState> {
                 console.log(data);
                 if (data.user) {
                     this.props.setSessionToken(data.sessionToken);
-                    this.props.updateToken(data.sessionToken);
+                    this.props.updateToken(data.sessionToken, data.user.username);
                     this.props.setUser(data.user.id);
-                    this.props.setUsername(data.user.username)
+                    // this.props.setUsername(data.user.username)
                 }
             })
 
