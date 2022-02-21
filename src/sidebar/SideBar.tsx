@@ -11,7 +11,7 @@ export interface SideBarProps {
     sessionToken: Props['sessionToken']
     username: Props['username']
     clearToken: Props['clearToken']
-
+    role: Props['role']
 }
 
 
@@ -64,8 +64,12 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                             <Link to="/mypost">{localStorage.getItem('username')}</Link>
                         </li>
                         <li>
+                            <Link to="/admin">{localStorage.getItem('role')}</Link>
+                        </li>
+                        <li>
                             <button onClick={this.props.clearToken}>Logout</button>
                         </li>
+
                     </div> : null}
             </div>
 

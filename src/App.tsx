@@ -10,9 +10,12 @@ import { Navigate } from "react-router-dom";
 import SideBar from "./sidebar/SideBar";
 import ViewPost from "./components/Create-View/ViewPost"
 import { useNavigate } from 'react-router-dom'
+import Admin from "./components/Admin";
+
+
 export type Props = {
   sessionToken: string | null,
-  updateToken: (newToken: string, uName: string) => void,
+  updateToken: (newToken: string, uName: string, rName: string) => void,
   setSessionToken: (newToken: string | null) => void,
   isLoggedIn: boolean,
   clearToken: () => void,
@@ -26,6 +29,8 @@ export type Props = {
   username: string
   setUsername: (username: string) => void
   ViewMyPosts: () => void
+  role: string
+  setRole: (role: string) => void
 
 };
 
@@ -44,11 +49,13 @@ const App: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [postId, setPostId] = useState<string>("")
   const [username, setUsername] = useState<string>("")
+  const [role, setRole] = useState<string>("")
   const navigate = useNavigate()
   // const [ViewMyPosts, setViewMyPosts] = useState<void>()
-  const updateToken = (newToken: string, uName: string) => {
+  const updateToken = (newToken: string, uName: string, rName: string) => {
     localStorage.setItem("Authorization", newToken);
     localStorage.setItem("username", uName);
+    localStorage.setItem("role", rName);
     setSesionToken(newToken)
   };
 
@@ -67,23 +74,26 @@ const App: React.FunctionComponent = () => {
     setIsOpen(false)
   }
 
-  const ViewMyPosts = async () => {
 
-  }
 
   useEffect(() => {
     setUser(user)
+    setRole(role)
+    if (localStorage.getItem('Authorization')) {
+      setSesionToken(localStorage.getItem('Authorization'))
+    }
   }, [sessionToken])
+
 
   return (
     <>
       {/* <SideBar /> */}
       {/* //<Router> */}
-      <SideBar clearToken={clearToken} username={username} sessionToken={sessionToken} />
+      <SideBar role={role} clearToken={clearToken} username={username} sessionToken={sessionToken} />
       <Routes>
 
         <Route path='/' element={
-          <Landing username={user} setUsername={setUsername} user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
+          <Landing role={role} setRole={setRole} username={user} setUsername={setUsername} user={user} setUser={setUser} closeModal={closeModal} toggleModal={toggleModal} isOpen={isOpen} sessionToken={sessionToken}
             updateToken={updateToken} setSessionToken={setSesionToken} />
         } />
 
@@ -106,6 +116,10 @@ const App: React.FunctionComponent = () => {
 
         <Route path='/mypost' element={
           <ViewPost user={user} setUser={setUser} postId={postId} />
+        } />
+
+        <Route path='/admin' element={
+          <Admin role={role} />
         } />
 
       </Routes>

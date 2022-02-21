@@ -72,6 +72,10 @@ export class MyPost extends React.Component<MyPostProps, MyPostState> {
                 Authorization: `${localStorage.getItem("Authorization")}`
             })
 
+
+        })
+        this.setState({
+            editActive: false
         })
         this.ViewMyPosts()
 

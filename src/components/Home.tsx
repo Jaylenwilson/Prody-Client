@@ -155,6 +155,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                     {/* //  <h2>{this.props.username}</h2> */}
                     <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
                     <MDBCardBody>
+                        <img src={posts.image} alt="" />
                         <ReactPlayer className="video" url={posts.link} />
                         <h3>{posts.description}</h3>
                         <MDBBtn onClick={() => this.viewComment(posts.id)}>view comments</MDBBtn>
@@ -170,7 +171,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         //call delete and or edit function here
                                         <div className="commentcontent"  >
                                             {/* <h5>{this.props.username}</h5> */}
-                                            <p >{c.content}</p>
+                                            <p id="content">{c.content}</p>
                                             {console.log(this.props.user, 'C User', c.userId)}
                                             {c.userId === this.props.user ?
                                                 <div>

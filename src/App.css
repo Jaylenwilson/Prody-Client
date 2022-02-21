@@ -33,7 +33,7 @@ MDBCard {
   justify-content: center;
   color: white;
   max-width: 500px;
-  
+
   left: 30%;
 }
 
@@ -152,9 +152,14 @@ a {
 
 #commentshell {
   text-align: center;
+  border-bottom: 1px solid #1F3F40 ;
 }
 
 #createbtn {
   margin-top: 5em;
   /* position: sticky; */
+}
+
+#content {
+  width: 100%;
 }

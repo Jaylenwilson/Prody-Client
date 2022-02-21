@@ -21,6 +21,8 @@ export interface SignupProps {
     setUser: Props['setUser'],
     username: Props['username'],
     setUsername: Props['setUsername']
+    role: Props['role']
+    setRole: Props['setRole']
 
 }
 
@@ -96,10 +98,14 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                 // this.props.setSessionToken(data.sessionToken);
                 if (json.user) {
                     this.props.setSessionToken(json.sessionToken);
-                    this.props.updateToken(json.sessionToken, json.user.username);
+                    this.props.updateToken(json.sessionToken, json.user.username, json.user.role);
                     this.props.setUser(json.user.id);
+                    this.props.closeModal()
+
                     // this.props.setUsername(json.user.username);
                 }
+                // this.props.setRole(json.user.role)
+
             })
             .catch(err => console.log(err))
     }
@@ -127,25 +133,25 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                         <Form onSubmit={this.userSignup} >
                             <FormGroup>
                                 <Label>Enter a Username</Label>
-                                <Input name='username' type='text' value={this.state.username} onChange={this.handleClick} />
+                                <Input name='username' type='text' value={this.state.username} onChange={this.handleClick} required />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Enter your email</Label>
-                                <Input name='email' type='text' value={this.state.email} onChange={this.handleClick} />
+                                <Input name='email' type='text' value={this.state.email} onChange={this.handleClick} required />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Create a password</Label>
-                                <Input name='password' type='text' value={this.state.password} onChange={this.handleClick} />
+                                <Input name='password' type='password' value={this.state.password} onChange={this.handleClick} required />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Select a role</Label>
-                                <Input type='select' name='role' value={this.state.role} onChange={this.handleClick}>
-                                    <option value="admin">Admin</option>
+                                <Input type='select' name='role' value={this.state.role} onChange={this.handleClick} required>
+                                    <option value="Admin">Admin</option>
                                     <option value="Instructor">Instructor</option>
                                     <option value="Student">Student</option>
                                 </Input>
                             </FormGroup>
-                            <Button onClick={this.props.closeModal} type='submit' >Sign up!</Button>
+                            <Button type='submit' >Sign up!</Button>
                         </Form>
                     </ModalBody>
                     {localStorage.getItem("sessionToken") && <Navigate to='/home' />}
