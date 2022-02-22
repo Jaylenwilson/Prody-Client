@@ -127,7 +127,6 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                 <Modal isOpen={this.props.isOpen} >
                     <div id="modalbtn">
                         <ModalHeader id="modalhead" >Sign Up </ModalHeader>
-                        <MDBBtn id="btn" onClick={this.props.closeModal}><FontAwesomeIcon icon={faTimes} fa-2x /></MDBBtn>
                     </div>
                     <ModalBody closeModal={this.props.closeModal}>
                         <Form onSubmit={this.userSignup} >
@@ -151,7 +150,8 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                                     <option value="Student">Student</option>
                                 </Input>
                             </FormGroup>
-                            <Button type='submit' >Sign up!</Button>
+                            <Button style={{ backgroundColor: "#042121" }} type='submit' >Sign up!</Button>
+                            <MDBBtn className="cancel" id="btn" onClick={this.props.closeModal}>Cancel</MDBBtn>
                         </Form>
                     </ModalBody>
                     {localStorage.getItem("sessionToken") && <Navigate to='/home' />}

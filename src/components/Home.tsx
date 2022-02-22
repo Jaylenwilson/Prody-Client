@@ -285,17 +285,20 @@ export class Home extends React.Component<HomeProps, HomeState> {
     render(): React.ReactNode {
         console.log(this.props)
         return (
+
             <div id="viewwrapper">
+
                 <Container id="homecontainer">
                     <Row>
                         <div >
-                            <MDBBtn id="createbtn" onClick={this.props.toggleModal}>gggg<FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
+                            <MDBBtn id="createbtn" onClick={this.props.toggleModal}><FaIcons.FaPlus className="fa-2xl" /></MDBBtn>
                             {/* <Button onClick={this.props.toggleModal}>gggg</Button> */}
                             <CreatePost ViewPost={this.ViewPost} setPostId={this.props.setPostId} postId={this.props.postId} sessionToken={this.props.sessionToken} isOpen={this.props.isOpen} toggleModal={this.props.toggleModal} closeModal={this.props.closeModal} />
 
                         </div>
                         <Col>
                             {this.postMap()}
+
 
                         </Col>
                     </Row>

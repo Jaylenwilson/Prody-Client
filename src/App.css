@@ -81,6 +81,8 @@ body {
   width: 100%;
   height:50px;
   color: darkgrey;
+  border-bottom: 4px solid #021414 ;
+
 }
 
 li{
@@ -108,6 +110,17 @@ h1{
   font-size: 90px;
   font-weight: 600;
   letter-spacing: 5px;
+  color: #021414;
+  text-align: center;
+  outline: white;
+}
+
+h3 {
+  color: #021414;
+}
+
+p{
+  color: #021414;
 }
 
 #registerbutton {
@@ -156,10 +169,59 @@ a {
 }
 
 #createbtn {
-  margin-top: 5em;
-  /* position: sticky; */
+  margin-top: 50em;
+  position: fixed;
+  border-radius: 100%;
+  height: 70px;
+  width: 70px;
 }
 
 #content {
   width: 100%;
+}
+
+.btn-primary {
+  background-color: #021414;
+}
+
+.btn-secondary {
+  background-color:#021414 ;
+}
+ .cancel {
+  left: 65%;
+}
+
+li .rightnav {
+  left: 100%;
+}
+
+/* .pagename {
+  right: 100%;
+  color:   #021414;
+  margin-bottom: 10em;
+  top: 50%;
+  margin-top:20% ;
+  position: fixed;
+} */
+
+/* .pagename {
+  margin-top: ;
+} */
+
+#table {
+  padding-top: 5em;
+  z-index: 0;
+}
+
+table, th, td {
+  border: 2px solid #021414;
+  color: white;
+}
+
+th {
+  background-color: #021414;
+}
+
+td {
+  background-color: #042121;
 }

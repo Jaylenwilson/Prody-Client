@@ -125,8 +125,8 @@ export class CreateP extends React.Component<CreatePostProps, CreatePostState> {
                                 <Input name='link' type='url' value={this.state.link} onChange={this.handleClick}></Input>
                             </FormGroup>
 
-                            <Button onClick={this.props.closeModal} type='submit'><FaIcons.FaPlus /></Button>
-                            <Button onClick={this.props.closeModal}>cancel</Button>
+                            <Button onClick={this.props.closeModal} type='submit'>Create</Button>
+                            <Button className="cancel" onClick={this.props.closeModal}>cancel</Button>
                         </Form>
                     </ModalBody>
                 </Modal>

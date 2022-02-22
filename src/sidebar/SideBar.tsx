@@ -60,14 +60,18 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                         <li>
                             <Link to="/mypost">My Post <FaIcons.FaBook /></Link>
                         </li>
-                        <li>
+                        <li className="rightnav">
                             <Link to="/mypost">{localStorage.getItem('username')}</Link>
                         </li>
-                        <li>
-                            <Link to="/admin">{localStorage.getItem('role')}</Link>
-                        </li>
-                        <li>
-                            <button onClick={this.props.clearToken}>Logout</button>
+                        {localStorage.getItem('role') === 'Admin' ?
+                            <li className="rightnav">
+                                <Link to="/admin">{localStorage.getItem('role')}</Link>
+                            </li> :
+                            <li>
+                                {localStorage.getItem('role')}
+                            </li>}
+                        <li className="rightnav">
+                            <Link to="/" onClick={this.props.clearToken}>Logout</Link>
                         </li>
 
                     </div> : null}
