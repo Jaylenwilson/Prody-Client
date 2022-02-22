@@ -132,7 +132,7 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                         <Form onSubmit={this.userSignup} >
                             <FormGroup>
                                 <Label>Enter a Username</Label>
-                                <Input name='username' type='text' value={this.state.username} onChange={this.handleClick} required />
+                                <Input name='username' type='text' value={this.state.username} onChange={this.handleClick} max="8" min="6" required />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Enter your email</Label>
@@ -140,7 +140,7 @@ export class Signup extends React.Component<SignupProps, SignUpState> {
                             </FormGroup>
                             <FormGroup>
                                 <Label>Create a password</Label>
-                                <Input name='password' type='password' value={this.state.password} onChange={this.handleClick} required />
+                                <Input name='password' type='password' value={this.state.password} onChange={this.handleClick} max="8" min="6" required />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Select a role</Label>

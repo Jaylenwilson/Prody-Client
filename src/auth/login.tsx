@@ -105,9 +105,9 @@ class Login extends React.Component<LoginProps, LoginState> {
                     <h3>Login</h3>
                     <form id="loginform" onSubmit={this.userLogin}>
 
-                        <MDBInput required className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username' ></MDBInput>
-                        <MDBInput required className='mb-4' type='text' name='email' value={this.state.email} onChange={this.handleClick} label='email'></MDBInput>
-                        <MDBInput required className='mb-4' type='password' name='password' value={this.state.password} onChange={this.handleClick} label='password'></MDBInput>
+                        <MDBInput required max="8" min="6" className='mb-4' type='text' name='username' value={this.state.username} onChange={this.handleClick} label='username' ></MDBInput>
+                        <MDBInput required max="8" min="6" className='mb-4' type='text' name='email' value={this.state.email} onChange={this.handleClick} label='email'></MDBInput>
+                        <MDBInput required max="8" min="6" className='mb-4' type='password' name='password' value={this.state.password} onChange={this.handleClick} label='password'></MDBInput>
 
                         <MDBBtn type='submit'>Sign in</MDBBtn>
                         {this.state.user !== "" && <Navigate to='/home' />}
