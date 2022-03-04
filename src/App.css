@@ -242,3 +242,7 @@ button {
 .searchbtn {
   color: white;
 }
+
+#backbtn {
+  margin-left: 2em;
+}

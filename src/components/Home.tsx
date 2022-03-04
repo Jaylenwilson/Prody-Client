@@ -370,6 +370,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
     };
 
+    clearSearch = (e: React.ChangeEvent<HTMLButtonElement>) => {
+        this.setState({ searchActive: false })
+    }
+
 
     render(): React.ReactNode {
         console.log(this.props)
@@ -383,6 +387,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                     <input type="search" id="searchform" name="query" placeholder="Search for ..." value={this.state.query} onChange={this.handleClick} />
                     <button type="submit"> <FaIcons.FaSearch className="searchbtn" color="#042121" /> </button>
                 </form>
+                {this.state.searchActive ? <MDBBtn id="backbtn" onClick={this.clearSearch}>Back</MDBBtn> : null}
 
                 <Container id="homecontainer">
                     <Row>
@@ -398,6 +403,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                             {/* {this.state.searchActive ? this.postMap() : <p>hello world</p>} */}
 
                         </Col>
+
+
                     </Row>
                     {this.state.commentActive ?
 
