@@ -31,7 +31,8 @@ export type Props = {
   ViewMyPosts: () => void
   role: string
   setRole: (role: string) => void
-
+  posts: string[]
+  setPosts: (posts: string[]) => void
 };
 
 
@@ -50,6 +51,7 @@ const App: React.FunctionComponent = () => {
   const [postId, setPostId] = useState<string>("")
   const [username, setUsername] = useState<string>("")
   const [role, setRole] = useState<string>("")
+  const [posts, setPosts] = useState<string[]>([])
   const navigate = useNavigate()
   // const [ViewMyPosts, setViewMyPosts] = useState<void>()
   const updateToken = (newToken: string, uName: string, rName: string) => {
@@ -89,7 +91,7 @@ const App: React.FunctionComponent = () => {
     <>
       {/* <SideBar /> */}
       {/* //<Router> */}
-      <SideBar role={role} clearToken={clearToken} username={username} sessionToken={sessionToken} />
+      <SideBar posts={posts} role={role} clearToken={clearToken} username={username} sessionToken={sessionToken} />
       <Routes>
 
         <Route path='/' element={
@@ -111,7 +113,7 @@ const App: React.FunctionComponent = () => {
           } /> */}
 
         <Route path='/home' element={
-          <Home username={username} setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
+          <Home posts={posts} setPosts={setPosts} username={username} setPostId={setPostId} postId={postId} user={user} isOpen={isOpen} sessionToken={sessionToken} closeModal={closeModal} toggleModal={toggleModal} />
         } />
 
         <Route path='/mypost' element={

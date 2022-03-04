@@ -6,12 +6,13 @@ import { Nav, NavItem } from 'reactstrap';
 import { render } from '@testing-library/react';
 import * as FaIcons from 'react-icons/fa';
 import { Props } from '../App'
-
+import { HomeProps } from '../components/Home';
 export interface SideBarProps {
     sessionToken: Props['sessionToken']
     username: Props['username']
     clearToken: Props['clearToken']
     role: Props['role']
+    posts: Props['posts']
 }
 
 
@@ -73,8 +74,8 @@ export class Sidebar extends React.Component<SideBarProps, SideBarState> {
                         <li className="rightnav">
                             <Link to="/" onClick={this.props.clearToken}>Logout</Link>
                         </li>
-
                     </div> : null}
+
             </div>
 
         )

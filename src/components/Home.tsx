@@ -29,7 +29,8 @@ export interface HomeProps {
     setPostId: Props['setPostId']
     postId: Props['postId']
     username: Props['username'],
-
+    posts: Props['posts']
+    setPosts: Props['setPosts']
 }
 
 export interface HomeState {
@@ -41,8 +42,13 @@ export interface HomeState {
     isOpen: boolean,
     viewcomment: boolean,
     commentEdit: boolean,
-    commentMatch: boolean
-
+    commentMatch: boolean,
+    isLoaded: boolean
+    error: null
+    results: string[]
+    searchActive: boolean
+    query: string
+    searchParam: string[]
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
@@ -58,7 +64,13 @@ export class Home extends React.Component<HomeProps, HomeState> {
             postId: "",
             viewcomment: false,
             commentEdit: false,
-            commentMatch: false
+            commentMatch: false,
+            isLoaded: false,
+            error: null,
+            results: [],
+            searchActive: false,
+            query: "",
+            searchParam: ["category"]
         }
         this.createComment = this.createComment.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -92,7 +104,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 if (data.posts[0]) {
                     console.log(data.posts[0].id)
                     console.log(data)
-                    this.setState({ posts: data.posts, })
+                    // this.setState({ posts: data.posts, })
+                    this.props.setPosts(data.posts)
+                    this.setState({ results: data.posts })
                 }
             })
             .catch((err) => console.log(err))
@@ -141,26 +155,28 @@ export class Home extends React.Component<HomeProps, HomeState> {
     //     this.deleteComment()
     // }
 
+    //1. get the array of posts 
+    //2.make functionality to search through the array for categories & maybe descriptions
+    //3. map that search results array 
 
 
 
     // add ternary for if comments show or not
-
-    postMap = () => {
-        return this.state.posts?.map((posts: any, index: number) => {
-            console.log('MAP', posts.id)
-            console.log('COMMENTS', posts.comments)
+    resultsMap = () => {
+        return this.state.results?.map((results: any, index: number) => {
+            console.log('MAP', results.id)
+            console.log('COMMENTS', results.comments)
             return (
-                <MDBCard className="card" key={posts.id}>
+                <MDBCard className="card" key={results.id}>
                     {/* //  <h2>{this.props.username}</h2> */}
-                    <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
+                    <MDBCardTitle className="title">{results.category}</MDBCardTitle>
                     <MDBCardBody>
-                        <img src={posts.image} alt="" />
-                        <ReactPlayer className="video" url={posts.link} />
-                        <h3>{posts.description}</h3>
-                        <MDBBtn onClick={() => this.viewComment(posts.id)}>view comments</MDBBtn>
+                        <img src={results.image} alt="" />
+                        <ReactPlayer className="video" url={results.link} />
+                        <h3>{results.description}</h3>
+                        <MDBBtn onClick={() => this.viewComment(results.id)}>view comments</MDBBtn>
                     </MDBCardBody>
-                    {posts.comments.map((c: any, index: number) => {
+                    {results.comments.map((c: any, index: number) => {
                         console.log(typeof c.content)
                         console.log(c.userId)
                         console.log(this.props.user)
@@ -173,6 +189,66 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             {/* <h5>{this.props.username}</h5> */}
                                             <p id="content">{c.content}</p>
                                             {console.log(this.props.user, 'C User', c.userId)}
+                                            {c.userId === this.props.user ?
+                                                <div>
+                                                    <MDBBtn onClick={() => this.activateCommentEdit(results.id, c.id)}> Edit</MDBBtn>
+                                                    <MDBBtn onClick={() => this.deleteComment(results.id, c.id)}>Delete</MDBBtn>
+                                                </div>
+                                                : null
+
+                                            }
+                                            {/* {() => {
+                                                console.log('UserId', c.userId)
+                                                if (c.userId === this.props.user) {
+                                                    return <MDBBtn onclick={this.activateCommentEdit}>Edit</MDBBtn>
+
+
+                                                } else {
+                                                    return null
+                                                }
+                                            }} */}
+
+
+                                        </div>
+                                        : null}
+                                </div>
+                            </div>
+                        )
+                    })}
+                    <MDBBtn onClick={() => this.activateComment(results.id)} postId={results.id}>Comment</MDBBtn>
+                </MDBCard>
+            )
+        })
+    }
+
+
+    postMap = () => {
+        return this.props.posts?.map((posts: any, index: number) => {
+            // console.log('MAP', posts.id)
+            // console.log('COMMENTS', posts.comments)
+            return (
+                <MDBCard className="card" key={posts.id}>
+                    {/* //  <h2>{this.props.username}</h2> */}
+                    <MDBCardTitle className="title">{posts.category}</MDBCardTitle>
+                    <MDBCardBody>
+                        <img src={posts.image} alt="" />
+                        <ReactPlayer className="video" url={posts.link} />
+                        <h3>{posts.description}</h3>
+                        <MDBBtn onClick={() => this.viewComment(posts.id)}>view comments</MDBBtn>
+                    </MDBCardBody>
+                    {posts.comments.map((c: any, index: number) => {
+                        // console.log(typeof c.content)
+                        // console.log(c.userId)
+                        // console.log(this.props.user)
+                        return (
+                            <div key={c.id}>
+                                <div id="commentshell">
+                                    {this.state.viewcomment ?
+                                        //call delete and or edit function here
+                                        <div className="commentcontent"  >
+                                            {/* <h5>{this.props.username}</h5> */}
+                                            <p id="content">{c.content}</p>
+                                            {/* {console.log(this.props.user, 'C User', c.userId)} */}
                                             {c.userId === this.props.user ?
                                                 <div>
                                                     <MDBBtn onClick={() => this.activateCommentEdit(posts.id, c.id)}> Edit</MDBBtn>
@@ -279,14 +355,34 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.ViewPost()
     }
 
+    searchPost = (e: React.ChangeEvent<HTMLFormElement>) => {
+        // this.resultsMap()
+        e.preventDefault()
+        this.setState({ searchActive: true })
+        this.setState({
+            results: this.state.results.filter((results: string) => {
+                return this.state.searchParam.some((newResults: any) => {
+                    return (results[newResults].toString().toLowerCase().indexOf(this.state.query.toLowerCase()) > -1
+                    )
+                });
+            }),
+        })
 
+    };
 
 
     render(): React.ReactNode {
         console.log(this.props)
+        console.log(this.state)
         return (
 
             <div id="viewwrapper">
+
+
+                <form onSubmit={this.searchPost}>
+                    <input type="search" id="searchform" name="query" placeholder="Search for ..." value={this.state.query} onChange={this.handleClick} />
+                    <button type="submit"> <FaIcons.FaSearch className="searchbtn" color="#042121" /> </button>
+                </form>
 
                 <Container id="homecontainer">
                     <Row>
@@ -297,8 +393,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         </div>
                         <Col>
-                            {this.postMap()}
-
+                            {/* returns the results map if search is active else returns postmap */}
+                            {this.state.searchActive ? this.resultsMap() : this.postMap()}
+                            {/* {this.state.searchActive ? this.postMap() : <p>hello world</p>} */}
 
                         </Col>
                     </Row>
